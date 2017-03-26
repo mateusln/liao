@@ -42,35 +42,36 @@ public class AnalisadorLexico {
             switch(estadoAtual){
                 
                 
-                case 0:
+                case 0: //estado inicial
                     if(c==' ' )
-                        break; // ignora espaço
+                        estadoAtual=0; // ignora espaço
                     
                     char [] cadeiadeChar= {'(',')',',','+','-','*',';'};
                     if (Arrays.toString(cadeiadeChar).contains(""+c)){// compara se o caractere esta na cadeia de char
                         lexema+=c;
                         estadoAtual=estadoFinal;
-                    }
-                    if(c=='<' || c== '>' || c== '=' ){
+                    }else if(c=='<' || c== '>' || c== '=' ){
                         lexema+=c;
                         estadoAtual=1;
-                    }
-                    
-                    if(c=='!'){
+                    }else if(c=='!'){
                         lexema+=c;
                         estadoAtual=2;
-                    }
-                    
-                    if(c=='/'){
+                    }else if(c=='/'){
                         lexema+=c;
                         estadoAtual=3;
+                    }else if(isLetra(c)){
+                        lexema+=c;
+                        estadoAtual=7;
+                    }else if(c=='_'){
+                        lexema+=c;
+                        estadoAtual=6;
                     }
                         
                     
                     
                    break;
                    
-                case 1:
+                case 1: // leu < > , =
                     
                     if(c=='='){
                         lexema+=c;
@@ -83,7 +84,7 @@ public class AnalisadorLexico {
                     
                     break;
                     
-                case 2:
+                case 2: // leu !
                     if(c== '='){
                         lexema+=c;
                         estadoAtual=estadoFinal;
@@ -91,7 +92,7 @@ public class AnalisadorLexico {
                     
                     break;
                 
-                case 3:
+                case 3: // leu /
                     if(c=='*')
                         estadoAtual=4;
                     else{
@@ -100,26 +101,53 @@ public class AnalisadorLexico {
                     }
                     break;
                     
-                case 4:
+                case 4: //leu '/' e '*', começa comentario
                     while(c!='*'){
                         c=(char) leitor.read();
                     }
                     estadoAtual=5;
                     break;
                     
-                case 5:
-                    if(c=='/'){
+                case 5: // leu * depois de ter lido /* pode fechar o cometario ou nao
+                    if(c=='/'){ //fecha comentario e volta para estado inicial
                         estadoAtual=0;
                         lexema="";
                     }
-                    else if( c=='*'){
-                     //   while(c=='*')
-                       //     c=(char) leitor.read();
+                    else if( c=='*'){ // le * indefinidamente se !='*' volta para estado 4
+                    
                         estadoAtual=5;
                         
                     }else
                         estadoAtual=4;
                         
+                    break;
+                    
+                case 6: // leu id começando com '_'
+                    if(c=='_'){
+                        lexema+=c;
+                        estadoAtual=6;
+                    }else if(isDigito(c) || isLetra(c)){ // muda para e7 se n tiver mais '_' no id
+                        lexema+=c;
+                        estadoAtual=7;
+                    }
+                        
+                        
+                    break;
+                    
+                case 7: // leu primeiro caracater do id ou leu '_'
+                    if(isDigito(c) || isLetra(c) || c=='_'){
+                        lexema+=c;
+                        estadoAtual=7;                        
+                    }else{
+                        devolve=true;
+                        estadoAtual=estadoFinal;
+                    }
+                        
+                    
+                    break;
+                    
+                case 8:
+                    //fazer
                     break;
                             
             }
@@ -132,4 +160,17 @@ public class AnalisadorLexico {
         lexema="";
     }
     
+    public static boolean isLetra(char c){
+		boolean isLetra = false;
+		if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+			isLetra = true;
+		return isLetra;
+	} 
+    
+    public static boolean isDigito(char c){
+		boolean isDigito = false;
+		if(c >= '0' && c <= '9')
+			isDigito = true;
+		return isDigito;
+	}
 }
