@@ -60,6 +60,11 @@ public class AnalisadorLexico {
                         lexema+=c;
                         estadoAtual=2;
                     }
+                    
+                    if(c=='/'){
+                        lexema+=c;
+                        estadoAtual=3;
+                    }
                         
                     
                     
@@ -87,15 +92,34 @@ public class AnalisadorLexico {
                     break;
                 
                 case 3:
-                    //fazer
+                    if(c=='*')
+                        estadoAtual=4;
+                    else{
+                        estadoAtual=estadoFinal;
+                        devolve=true;
+                    }
                     break;
                     
                 case 4:
-                    //fazer
+                    while(c!='*'){
+                        c=(char) leitor.read();
+                    }
+                    estadoAtual=5;
                     break;
                     
                 case 5:
-                    //fazer
+                    if(c=='/'){
+                        estadoAtual=0;
+                        lexema="";
+                    }
+                    else if( c=='*'){
+                     //   while(c=='*')
+                       //     c=(char) leitor.read();
+                        estadoAtual=5;
+                        
+                    }else
+                        estadoAtual=4;
+                        
                     break;
                             
             }
