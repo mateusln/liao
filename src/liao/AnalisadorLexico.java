@@ -60,6 +60,7 @@ public class AnalisadorLexico {
                         lexema+=c;
                         estadoAtual=3;
                     }else if(isLetra(c)){
+                        
                         lexema+=c;
                         estadoAtual=7;
                     }else if(c=='_'){
@@ -135,10 +136,13 @@ public class AnalisadorLexico {
                     break;
                     
                 case 7: // leu primeiro caracater do id ou leu '_'
+                    
+                    
                     if(isDigito(c) || isLetra(c) || c=='_'){
                         lexema+=c;
                         estadoAtual=7;                        
                     }else{
+                    //fazer pesquisaTS
                         devolve=true;
                         estadoAtual=estadoFinal;
                     }
@@ -158,6 +162,8 @@ public class AnalisadorLexico {
         //#teste
         System.out.println("lexema "+lexema);
         lexema="";
+        
+        // criar uma classe (pode ser com o nome Simbolo ou RegistroLexico) onde recebe o lexema para criar o objeto dessa classe ver tp1.doc n1 e n2
     }
     
     public static boolean isLetra(char c){
