@@ -136,7 +136,8 @@ public class AnalisadorLexico {
                     } else if ( isDigito(c) || isLetra(c) ) { // muda para e7 se n tiver mais '_' no id
                         lexema+=c;
                         estadoAtual = 7;
-                    }
+                    }else
+                        System.out.println("ERRO id apenas com _");
                     
                     break;
                     
