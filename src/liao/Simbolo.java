@@ -4,7 +4,7 @@
  * Disciplina: Compiladores (1-2017)
  * Trabalho Pratico
  * Liao - Compilador para a Linguagem Imperativa Simplificada 'L'
- * Parte 1 - Analisador Lexico e Analisador Sinttico
+ * Parte 1 - Analisador Lexico e Analisador Sintatico
  * @author Ana Cristina Pereira Teixeira
  * @author Jordan Lyon Ramos Rodrigues Duarte
  * @author Mateus Loures do Nascimento

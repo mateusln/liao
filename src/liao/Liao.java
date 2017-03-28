@@ -4,7 +4,7 @@
  * Disciplina: Compiladores (1-2017)
  * Trabalho Pratico
  * Liao - Compilador para a Linguagem Imperativa Simplificada 'L'
- * Parte 1 - Analisador Lexico e Analisador Sinttico
+ * Parte 1 - Analisador Lexico e Analisador Sintatico
  * @author Ana Cristina Pereira Teixeira
  * @author Jordan Lyon Ramos Rodrigues Duarte
  * @author Mateus Loures do Nascimento
@@ -27,7 +27,7 @@ public class Liao {
     public static void main(String[] args) throws FileNotFoundException, IOException {
         // TODO code application logic here
             
-        String fonte= args[0]; //aruivo fonte 
+        String fonte= args[0]; //arquivo fonte 
         
         BufferedReader leitor;
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));  
@@ -37,7 +37,6 @@ public class Liao {
             leitor = new BufferedReader(new FileReader(fonte));
         else
             leitor = new BufferedReader(new FileReader(fonte+=".l"));
-        
         
         AnalisadorLexico analisadorLexico = new AnalisadorLexico();
         
@@ -49,6 +48,4 @@ public class Liao {
         
  
     }
-    
-    
 }
