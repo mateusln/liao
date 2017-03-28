@@ -74,8 +74,16 @@ public class AnalisadorLexico {
                         estadoAtual = 6;
                     } else if ( c == '\'' ) {
                         lexema+=c;
+                        estadoAtual = 16;
+                    } else if (c == '0') {
+                        lexema+=c;
                         estadoAtual = 8;
+                    } else if ( isDigito(c) && c != '0' ) {
+                        System.out.println("entrei");
+                        lexema+=c;
+                        estadoAtual = 11;
                     }
+                    
                     
                     break;
                 
@@ -137,7 +145,9 @@ public class AnalisadorLexico {
                         lexema+=c;
                         estadoAtual = 7;
                     }else{
+                        
                         System.out.println("ERRO id apenas com _");
+                        lexema="";
                         return  ;
                     }
                     break;
@@ -155,8 +165,9 @@ public class AnalisadorLexico {
                         
                     
                     break;
+
                     
-                case 8:
+                case 16:
                     char [] cadeia = {'(',')',',','+','-','*',';','_','.',':','[',']','{','}','"','/','|','?','!','>', '<', '='};
                     if ( c == '\'' ) { // fim string
                         lexema+=c;
@@ -183,6 +194,53 @@ public class AnalisadorLexico {
                     }
                     
                     break;
+
+                case 8: // número 
+                    if ( c == 'h' ) {
+                        lexema+=c;
+                        estadoAtual = 9;
+                    } else if( isDigito(c) ) {
+                        lexema+=c;
+                        estadoAtual = 11;
+                    } else {
+                        // (c != h) && (c != digito)
+
+                        devolve = true;
+                        estadoAtual = estadoFinal;
+                    }
+
+                    break;
+
+                case 9:
+                    if ( isHexadecimal(c) ) {
+                        lexema+=c;
+                        estadoAtual = 10;
+                    }
+
+                    break;
+
+                case 10:
+                    if ( isHexadecimal(c) ) {
+                        lexema+=c;
+                        estadoAtual = estadoFinal;
+                    }
+
+                    break;
+
+                case 11:
+                    if ( isDigito(c) ){
+                        lexema+=c;
+                        estadoAtual = 11;
+                    } else {
+                        // c != Digito
+
+                        devolve = true;
+                        estadoAtual=estadoFinal;
+                    }
+
+                    break;
+
+
             }
         }
         
@@ -207,4 +265,11 @@ public class AnalisadorLexico {
 			isDigito = true;
 		return isDigito;
 	}
+
+    public static boolean isHexadecimal(char c){
+        boolean isHexadecimal = false;
+        if ( (c >= 0 && c <= 9) || ( c >= 'A' && c <= 'F' ))
+            isHexadecimal = true;
+        return isHexadecimal;
+    }
 }
