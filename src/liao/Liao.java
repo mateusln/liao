@@ -1,7 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * PUC Minas - ICEI
+ * Curso de Ciencia da Computacao
+ * Disciplina: Compiladores (1-2017)
+ * Trabalho Pratico
+ * Liao - Compilador para a Linguagem Imperativa Simplificada 'L'
+ * Parte 1 - Analisador Lexico e Analisador Sinttico
+ * @author Ana Cristina Pereira Teixeira
+ * @author Jordan Lyon Ramos Rodrigues Duarte
+ * @author Mateus Loures do Nascimento
  */
 package liao;
 
@@ -36,7 +42,7 @@ public class Liao {
         AnalisadorLexico analisadorLexico = new AnalisadorLexico();
         
         for(int i=0 ; i < 10 ; i++)
-            analisadorLexico.analisar(leitor);
+            AnalisadorLexico.analisar(leitor);
         
         
         //System.out.println(leitor.readLine());
