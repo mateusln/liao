@@ -40,11 +40,10 @@ public class Liao {
         
         AnalisadorLexico analisadorLexico = new AnalisadorLexico();
         
-        for(int i=0 ; i < 10 ; i++)
+        for(int i=0 ; i < 10 ; i++) //#teste
             AnalisadorLexico.analisar(leitor);
         
         
-        //System.out.println(leitor.readLine());
         
  
     }

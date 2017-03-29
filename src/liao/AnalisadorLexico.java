@@ -26,6 +26,9 @@ public class AnalisadorLexico {
     static int numLinha = 1;
     static String  lexema = "";
     char c;
+    // Todo char valido dentro de uma string
+    //esta dentro do metodo isCharvalido
+//    char [] simbolosValidos = {'(',')',',','+','-','*',';','_','.',':','[',']','{','}','"','/','|','?','!','>', '<', '='};
     
     public static final void analisar (BufferedReader leitor) throws IOException {
         int estadoAtual = 0;
@@ -208,15 +211,12 @@ public class AnalisadorLexico {
                     break;
                     
                 case 12:
-                    // dentro da String, todos caracteres validos
-                    char [] cadeia = {'(',')',',','+','-','*',';','_','.',':','[',']','{','}','"','/','|','?','!','>', '<', '='};
                     if ( c == '\'' ) { // fim string
                         lexema+=c;
                         estadoAtual = estadoFinal;
                     } else if( (int)c == 9 ) { // espaço vazio
                         estadoAtual = estadoFinal;
-                    } else if ( isLetra(c) || isDigito(c) || c == ' ' || (int)c == 92 || (int)c == 39 ||
-                                Arrays.toString(cadeia).contains(""+c)) {
+                    } else if ( isCharValido(c) ) {
                        lexema+=c;
                     } else if( (int)c == 10 ) { // \n
                         //numLinha++;
@@ -235,7 +235,7 @@ public class AnalisadorLexico {
         // criar uma classe (pode ser com o nome Simbolo ou RegistroLexico) onde recebe o lexema para criar o objeto dessa classe ver tp1.doc n1 e n2
     }
     
-    public static boolean isLetra(char c){
+    public static boolean isLetra( char c){
 		boolean isLetra = false;
 		if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
 			isLetra = true;
@@ -256,9 +256,21 @@ public class AnalisadorLexico {
         return isHexadecimal;
     }
     
+    public static boolean simboloContem(char c){
+        boolean simboloContem = false;
+        char [] simbolosValidos = {'(',')',',','+','-','*',';','_','.',':','[',']','{','}','"','/','|','?','!','>', '<', '='};
+
+        if (Arrays.toString(simbolosValidos).contains(""+c)){
+            simboloContem = true;
+        }
+        return simboloContem;
+
+    }
+
     public static boolean isCharValido(char c) {
         boolean isCharValido = false;
-        // completar
+        if ( isLetra(c) || isDigito(c) || simboloContem(c) || c == ' ' || (int)c == 92 || (int)c == 39 )
+            isCharValido = true;
         return isCharValido;
     }
 }
