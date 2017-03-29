@@ -29,7 +29,7 @@ public class AnalisadorLexico {
     
     public static final void analisar (BufferedReader leitor) throws IOException {
         int estadoAtual = 0;
-        final int estadoFinal = 12;
+        final int estadoFinal = 13;
         char c = ' ';
         boolean devolve = false;
         
@@ -72,18 +72,17 @@ public class AnalisadorLexico {
                     } else if ( c == '_' ) {
                         lexema+=c;
                         estadoAtual = 6;
-                    } else if ( c == '\'' ) {
+                    } else if ( c == '\'' ) { // Inicia String
                         lexema+=c;
-                        estadoAtual = 16;
+                        estadoAtual = 12;
                     } else if (c == '0') {
                         lexema+=c;
                         estadoAtual = 8;
                     } else if ( isDigito(c) && c != '0' ) {
-                        System.out.println("entrei");
+                        //System.out.println("entrei");
                         lexema+=c;
                         estadoAtual = 11;
                     }
-                    
                     
                     break;
                 
@@ -162,39 +161,9 @@ public class AnalisadorLexico {
                         devolve = true;
                         estadoAtual = estadoFinal;
                     }
-                        
                     
                     break;
-
-                    
-                case 16:
-                    char [] cadeia = {'(',')',',','+','-','*',';','_','.',':','[',']','{','}','"','/','|','?','!','>', '<', '='};
-                    if ( c == '\'' ) { // fim string
-                        lexema+=c;
-                        estadoAtual = estadoFinal;
-                    } else if( (int)c == 9 ) { // espaço vazio
-                        estadoAtual = estadoFinal;
-                    } else if( (int)c == 10 ) { // \n
-                        numLinha++;
-                        estadoAtual = estadoFinal;
-                    } else if( (int)c == 13 ) { // \r
-                        estadoAtual = estadoFinal;
-                    } else if( (int)c == 65535 ) { // FDA
-                        System.out.println( numLinha + ":fim de arquivo n�o esperado.");
-                        System.exit(0);
-                    }
-                    // dentro da String, todos caracteres validos
-                    //char [] cadeiadeChar = {'(',')',',','+','-','*',';'};
-                    else if ( isLetra(c) || isDigito(c) || c == ' ' || (int)c == 92 || (int)c == 39 ||
-                            Arrays.toString(cadeia).contains(""+c)) {
-                        lexema+=c;
-                    } else {
-                        System.out.println(numLinha + ":caractere invalido.");
-                        System.exit(0);
-                    }
-                    
-                    break;
-
+                
                 case 8: // número 
                     if ( c == 'h' ) {
                         lexema+=c;
@@ -204,7 +173,6 @@ public class AnalisadorLexico {
                         estadoAtual = 11;
                     } else {
                         // (c != h) && (c != digito)
-
                         devolve = true;
                         estadoAtual = estadoFinal;
                     }
@@ -233,17 +201,32 @@ public class AnalisadorLexico {
                         estadoAtual = 11;
                     } else {
                         // c != Digito
-
                         devolve = true;
                         estadoAtual=estadoFinal;
                     }
 
                     break;
-
-
+                    
+                case 12:
+                    // dentro da String, todos caracteres validos
+                    char [] cadeia = {'(',')',',','+','-','*',';','_','.',':','[',']','{','}','"','/','|','?','!','>', '<', '='};
+                    if ( c == '\'' ) { // fim string
+                        lexema+=c;
+                        estadoAtual = estadoFinal;
+                    } else if( (int)c == 9 ) { // espaço vazio
+                        estadoAtual = estadoFinal;
+                    } else if ( isLetra(c) || isDigito(c) || c == ' ' || (int)c == 92 || (int)c == 39 ||
+                                Arrays.toString(cadeia).contains(""+c)) {
+                       lexema+=c;
+                    } else if( (int)c == 10 ) { // \n
+                        //numLinha++;
+                        estadoAtual = estadoFinal;
+                        System.out.println("quebra"); // erro de lexema nao esperado 
+                    }
+                    
+                    break;              
             }
         }
-        
         
         //#teste
         System.out.println("lexema "+lexema);
@@ -271,5 +254,11 @@ public class AnalisadorLexico {
         if ( (c >= 0 && c <= 9) || ( c >= 'A' && c <= 'F' ))
             isHexadecimal = true;
         return isHexadecimal;
+    }
+    
+    public static boolean isCharValido(char c) {
+        boolean isCharValido = false;
+        // completar
+        return isCharValido;
     }
 }
