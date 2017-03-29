@@ -14,6 +14,12 @@ package liao;
 /**
  *
  * @author mateus
+ * 
+ * O token reconhecido deverá ser representado por um registro único de escopo
+ * global contendo campo para o número do token, lexema, endereço de inserção na
+ * tabela (somente para identificadores e palavras reservadas) e tipo (somente
+ * para o token constante). Observe que o registro léxico é diferente do
+ * registro da tabela de símbolos.
  */
 public class RegistroLexico {
     int numTok;
