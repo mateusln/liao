@@ -27,6 +27,11 @@ public class Simbolo {
         this.lexema = lexema;
     }
     
+    public Simbolo(byte token, String lexema, String endereco) {
+        this.token = token;
+        this.lexema = lexema;
+    }
+    
     public String getLexema() {
         return lexema;
     }

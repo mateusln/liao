@@ -11,16 +11,9 @@
  */
 package liao;
 
-//import java.util.Collections;
 import java.util.HashMap;
-//import java.util.Iterator;
 
-/**
- *
- * @author anacr
- */
 public class Tab_Simbolos {
-    //public static HashMap <String, Simbolo> token = new HashMap <String,Simbolo>();
     public static HashMap <String, Simbolo> token = new HashMap <>();
     
     private final byte CONST = 0;
@@ -94,8 +87,8 @@ public class Tab_Simbolos {
         token.put("main", new Simbolo (MAIN,"main"));
 	token.put("write", new Simbolo (WRITE,"write")); 			
 	token.put("writeln", new Simbolo (WRITELN,"writeln"));		
-	token.put("TRUE", new Simbolo (TRUE,"TRUE"));
-	token.put("FALSE", new Simbolo (FALSE,"FALSE"));
+	token.put("true", new Simbolo (TRUE,"true"));
+	token.put("false", new Simbolo (FALSE,"false"));
 	token.put("boolean", new Simbolo (BOOLEAN,"boolean"));
     }
     
@@ -117,11 +110,4 @@ public class Tab_Simbolos {
         return token.containsKey(lexema);
     }
     
-    // Metodo para Imprimir na tela **** TESTE
-    public void imprimir() {
-        if(token.containsKey("MAIN"));
-        {
-            System.out.println("Valor: " + " SOMA " + token.get("+").getNumToken());
-        }
-    }
 }

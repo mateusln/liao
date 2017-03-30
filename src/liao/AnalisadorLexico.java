@@ -233,6 +233,9 @@ public class AnalisadorLexico {
         lexema="";
         
         // criar uma classe (pode ser com o nome Simbolo ou RegistroLexico) onde recebe o lexema para criar o objeto dessa classe ver tp1.doc n1 e n2
+        
+        //if (!EOF)
+        
     }
     
     public static boolean isLetra( char c){
