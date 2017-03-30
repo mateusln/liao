@@ -59,7 +59,7 @@ public class Tab_Simbolos {
     private final byte FALSE = 33;
     private final byte BOOLEAN = 34;
     private final byte IDENTIFICADOR = 35;
-    private final byte CONSTANTE = 36;
+    private final byte VALORCONSTANTE = 36;
     
     public Tab_Simbolos() {
         token.put("const", new Simbolo (CONST,"const"));
@@ -97,8 +97,6 @@ public class Tab_Simbolos {
 	token.put("TRUE", new Simbolo (TRUE,"TRUE"));
 	token.put("FALSE", new Simbolo (FALSE,"FALSE"));
 	token.put("boolean", new Simbolo (BOOLEAN,"boolean"));
-	token.put("id", new Simbolo (IDENTIFICADOR,"id"));
-	token.put("const", new Simbolo (CONSTANTE,"const"));
     }
     
     // Metodo de Pesquisa
