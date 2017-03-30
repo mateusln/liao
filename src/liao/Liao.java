@@ -30,13 +30,12 @@ public class Liao {
         String fonte= args[0]; //arquivo fonte 
         
         BufferedReader leitor;
-	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));  
-	//System.out.println("Digite o nome: ");
-	//String fonte = br.readLine();
 	if(fonte.endsWith(".l"))
             leitor = new BufferedReader(new FileReader(fonte));
         else
             leitor = new BufferedReader(new FileReader(fonte+=".l"));
+        
+        
         
         AnalisadorLexico analisadorLexico = new AnalisadorLexico();
         

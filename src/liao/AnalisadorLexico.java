@@ -26,15 +26,21 @@ public class AnalisadorLexico {
     static int numLinha = 1;
     static String  lexema = "";
     char c;
+    
     // Todo char valido dentro de uma string
     //esta dentro do metodo isCharvalido
 //    char [] simbolosValidos = {'(',')',',','+','-','*',';','_','.',':','[',']','{','}','"','/','|','?','!','>', '<', '='};
     
-    public static final void analisar (BufferedReader leitor) throws IOException {
+    public AnalisadorLexico () {
+        tabela = new Tab_Simbolos();
+    }
+
+    public static final Simbolo analisar(BufferedReader leitor) throws IOException {
         int estadoAtual = 0;
         final int estadoFinal = 13;
         char c = ' ';
         boolean devolve = false;
+        
         
         while ( estadoAtual != estadoFinal ) {
             
@@ -46,7 +52,7 @@ public class AnalisadorLexico {
                 
             if ( c ==(char) -1 ) {//#teste
                 estadoAtual = estadoFinal;
-                return;
+                return null;
             }
             
             switch ( estadoAtual ) {
@@ -150,7 +156,7 @@ public class AnalisadorLexico {
                         
                         System.out.println("ERRO id apenas com _");
                         lexema="";
-                        return  ;
+                        return  null;
                     }
                     break;
                     
@@ -166,7 +172,7 @@ public class AnalisadorLexico {
                     }
                     
                     break;
-                
+                    
                 case 8: // número 
                     if ( c == 'h' ) {
                         lexema+=c;
@@ -217,7 +223,7 @@ public class AnalisadorLexico {
                     } else if( (int)c == 9 ) { // espaço vazio
                         estadoAtual = estadoFinal;
                     } else if ( isCharValido(c) ) {
-                       lexema+=c;
+                        lexema+=c;
                     } else if( (int)c == 10 ) { // \n
                         //numLinha++;
                         estadoAtual = estadoFinal;
@@ -230,12 +236,15 @@ public class AnalisadorLexico {
         
         //#teste
         System.out.println("lexema "+lexema);
-        lexema="";
+        //
         
         // criar uma classe (pode ser com o nome Simbolo ou RegistroLexico) onde recebe o lexema para criar o objeto dessa classe ver tp1.doc n1 e n2
         
         //if (!EOF)
-        
+        byte numToken= tabela.pesquisar(lexema);
+        Simbolo simbolo = new Simbolo(numToken, lexema);
+        lexema="";
+        return simbolo;
     }
     
     public static boolean isLetra( char c){
