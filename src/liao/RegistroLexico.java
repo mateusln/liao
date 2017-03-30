@@ -30,20 +30,16 @@ public class RegistroLexico {
     char c;
     //boolean marcado;
     
-    public RegistroLexico (byte token, String lexema, char c, int cont) { // boolean marcado
-        this.numTok = token;
+    public RegistroLexico (byte numeroToken, String lexema) { // boolean marcado
+        this.numTok = numeroToken;
         this.lex = lexema;
-        this.c = c;
-        this.linha = cont;
         //this.marcado = marcado;
     }
     
-    public RegistroLexico (byte token, String lexema, Simbolo endereco, char c, int cont) { // boolean marcado
-        this.numTok = token;
+    public RegistroLexico (byte numeroToken, String lexema, Simbolo endereco) { // boolean marcado
+        this.numTok = numeroToken;
         this.lex = lexema;
         this.endereco = endereco;
-        this.c = c;
-        this.linha = cont;
         //this.marcado = marcado;
     }
     
@@ -87,9 +83,6 @@ public class RegistroLexico {
         this.linha = cont;
     }
     
-    public char getC() {
-        return this.c;
-    }
 
     /*
     public boolean getMarcado() {
