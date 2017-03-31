@@ -80,6 +80,8 @@ public class AnalisadorSintatico {
     public void CasaToken( byte tokenRecebido ) throws IOException {
         if( tokenRecebido != (byte)registro.getNumToken() ) {
             //System.out.println( registro.getCont()+":token não esperado." );
+            System.out.println("ERRO");
+            System.out.println(tokenRecebido );
             System.exit(0);
         } else {
             //registro = anLex.automato( registro.getMarcado(), registro.getC() );

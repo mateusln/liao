@@ -27,9 +27,6 @@ public class AnalisadorLexico {
     static String  lexema = "";
     char c;
     
-    // Todo char valido dentro de uma string
-    //esta dentro do metodo isCharvalido
-//    char [] simbolosValidos = {'(',')',',','+','-','*',';','_','.',':','[',']','{','}','"','/','|','?','!','>', '<', '='};
     
     public AnalisadorLexico () {
         tabela = new Tab_Simbolos();
@@ -37,7 +34,7 @@ public class AnalisadorLexico {
 
     public static final Simbolo analisar(BufferedReader leitor) throws IOException {
         int estadoAtual = 0;
-        final int estadoFinal = 13;
+        final int estadoFinal = 14;
         char c = ' ';
         boolean devolve = false;
         
@@ -191,6 +188,7 @@ public class AnalisadorLexico {
                         // (c != h) && (c != digito)
                         devolve = true;
                         estadoAtual = estadoFinal;
+                        tabela.inserir(lexema);
                     }
 
                     break;
@@ -219,25 +217,34 @@ public class AnalisadorLexico {
                         // c != Digito
                         devolve = true;
                         estadoAtual=estadoFinal;
+                        tabela.inserir(lexema);
                     }
 
                     break;
                     
                 case 12:
-                    if ( c == '\'' ) { // fim string
+                    if ( isStringValida(c) ) {
                         lexema+=c;
-                        estadoAtual = estadoFinal;
-                    } else if( (int)c == 9 ) { // espaço vazio
-                        estadoAtual = estadoFinal;
-                    } else if ( isCharValido(c) ) {
+                        estadoAtual = 12;
+                    } else if ( c == '\'' ) {
                         lexema+=c;
-                    } else if( (int)c == 10 ) { // \n
-                        //numLinha++;
-                        estadoAtual = estadoFinal;
-                        System.out.println("quebra"); // erro de lexema nao esperado 
+                        estadoAtual = 13;
+                    } else if ( (int)c == 10 ) {
+                        System.out.println("erro - lexema não identificado");
+                        System.exit(0);
                     }
                     
-                    break;              
+                break;
+                    
+                case 13:
+                    if ( c == '\'' ) {
+                        lexema+=c;
+                        estadoAtual = 12;
+                    } else {
+                        devolve = true;
+                        estadoAtual = estadoFinal;
+                    }
+                break;            
             }
         }
         
@@ -277,7 +284,7 @@ public class AnalisadorLexico {
     
     public static boolean simboloContem(char c){
         boolean simboloContem = false;
-        char [] simbolosValidos = {'(',')',',','+','-','*',';','_','.',':','[',']','{','}','"','/','|','?','!','>', '<', '='};
+        char [] simbolosValidos = {'&','(',')',',','+','-','*',';','_','.',':','[',']','{','}','"','/','|','?','!','>', '<', '='};
 
         if (Arrays.toString(simbolosValidos).contains(""+c)){
             simboloContem = true;
@@ -286,10 +293,10 @@ public class AnalisadorLexico {
 
     }
 
-    public static boolean isCharValido(char c) {
-        boolean isCharValido = false;
-        if ( isLetra(c) || isDigito(c) || simboloContem(c) || c == ' ' || (int)c == 92 || (int)c == 39 )
-            isCharValido = true;
-        return isCharValido;
+    public static boolean isStringValida(char c) {
+        boolean isStringValida = false;
+        if ( isLetra(c) || isDigito(c) || simboloContem(c) || c == ' ' )
+            isStringValida = true;
+        return isStringValida;
     }
 }
