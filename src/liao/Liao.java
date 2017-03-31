@@ -40,8 +40,8 @@ public class Liao {
         
         //AnalisadorLexico analisadorLexico = new AnalisadorLexico();
         
-        //for(int i=0 ; i < 10 ; i++) //#teste
-          //  AnalisadorLexico.analisar(leitor);
+        //for(int i=0 ; i < 500 ; i++) //#teste
+          //AnalisadorLexico.analisar(leitor);
         
         
         

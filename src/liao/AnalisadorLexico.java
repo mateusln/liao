@@ -25,7 +25,8 @@ public class AnalisadorLexico {
     private static boolean FDA = false;
     static int numLinha = 1;
     static String  lexema = "";
-    char c;
+    static char c = ' ';
+    static boolean devolve = false;
     
     
     public AnalisadorLexico () {
@@ -35,8 +36,6 @@ public class AnalisadorLexico {
     public static final Simbolo analisar(BufferedReader leitor) throws IOException {
         int estadoAtual = 0;
         final int estadoFinal = 14;
-        char c = ' ';
-        boolean devolve = false;
         
         
         while ( estadoAtual != estadoFinal ) {
@@ -54,8 +53,8 @@ public class AnalisadorLexico {
             
             switch ( estadoAtual ) {
                 case 0: // estado inicial
-                    if(c == ' ' )
-                        estadoAtual = 0; // ignora espaço
+                    if(c == ' ' || (int)c==10) 
+                        estadoAtual = 0; // ignora espaço e \n
                     
                     char [] cadeiadeChar = {'(',')',',','+','-','*',';'};
                     
@@ -125,6 +124,11 @@ public class AnalisadorLexico {
                 case 4: //leu '/' e '*', começa comentario
                     while (c!='*') {
                         c = (char) leitor.read();
+                        if ( c ==(char) -1 ) {//erro
+                            estadoAtual = estadoFinal;
+                            System.out.println("Fim de arquivo nao esperado");
+                            return null;
+                        }
                     }
                     estadoAtual = 5;
                     break;
@@ -162,8 +166,6 @@ public class AnalisadorLexico {
                         lexema+=c;
                         estadoAtual = 7;                        
                     } else {
-                        //fazer pesquisaTS
-                        //Simbolo=tabela.pesquisar(lexema);
                         
                         
                         devolve = true;
