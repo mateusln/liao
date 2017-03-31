@@ -1,10 +1,2 @@
 /*teste*/
-true
-if
-else
-main
-while
-end
-begin
-const
-11
+int

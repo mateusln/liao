@@ -166,9 +166,16 @@ public class AnalisadorLexico {
                         estadoAtual = 7;                        
                     } else {
                         //fazer pesquisaTS
+                        //Simbolo=tabela.pesquisar(lexema);
+                        
                         
                         devolve = true;
                         estadoAtual = estadoFinal;
+                        
+                        if( !tabela.existe(lexema)  ) //se não for palavra reservada, adiciona a ID a tabela de simbolos
+                        {
+                            tabela.inserir(lexema);
+                        }
                     }
                     
                     break;
