@@ -27,7 +27,7 @@ public class AnalisadorLexico {
     static String  lexema = "";
     static char c = ' ';
     static boolean devolve = false;
-    static int linha=1;
+    static int contaLinha=1;
     
     
     public AnalisadorLexico () {
@@ -59,7 +59,7 @@ public class AnalisadorLexico {
                     char [] cadeiadeChar = {'(',')',',','+','-','*',';'};
                     
                     if( (int)c == 10)
-                    System.out.print(++linha+" ");
+                        contaLinha++;
                     
                     if(c == ' ' || (int)c==10){ 
                         estadoAtual = 0; // ignora espaço e \n
@@ -161,7 +161,7 @@ public class AnalisadorLexico {
                         estadoAtual = 7;
                     }else{
                         
-                        System.out.println("LINHA: Lexema nao identificado");
+                        System.out.println(contaLinha+": Lexema nao identificado");
                         lexema="";
                         System.exit(0);
                     }
@@ -215,7 +215,7 @@ public class AnalisadorLexico {
                         estadoAtual = estadoFinal;
                         tabela.inserir(lexema);
                     } else{
-                        System.out.println("LINHA :ERRO lexema não esperado");
+                        System.out.println(contaLinha+":ERRO lexema não esperado");
                         System.exit(0);
                     }
                     break;
