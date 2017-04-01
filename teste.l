@@ -1,9 +1,19 @@
-/*teste*/
-byte y,x=1;
+/** Exemplo de Programa na linguagem L  - nao tem erro */
+
+integer n;
+string nome;
+boolean naoTerminou;
+const MAXITER=10;
+
+/* Programa Principal */
 main
-if (1<2) then begin
-	x=1+1;
-	y=x+1;
-	x=x+1;
-	end
+  write('Digite seu nome: ');
+  readln(nome);
+  naoTerminou=true;
+  n=0;
+  while (naoTerminou) begin
+    writeln('Ola'' ',nome);
+    n=n+1;
+    naoTerminou=n<MAXITER;
+  end
 end

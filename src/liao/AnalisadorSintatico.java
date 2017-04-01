@@ -53,7 +53,7 @@ public class AnalisadorSintatico {
     private final byte FALSE = 33;
     private final byte BOOLEAN = 34;
     private final byte IDENTIFICADOR = 35;
-    private final byte CONSTANTE = 36;
+    private final byte VALORCONSTANTE = 36;
     
     Simbolo registro;
     AnalisadorLexico automato;
@@ -186,8 +186,8 @@ public class AnalisadorSintatico {
         }
         else if( registro.getNumToken() == IDENTIFICADOR )
             CasaToken( IDENTIFICADOR );
-        else if( registro.getNumToken() == CONST )
-            CasaToken( CONST );
+        else if( registro.getNumToken() == VALORCONSTANTE )
+            CasaToken( VALORCONSTANTE );
         else {
             CasaToken( NOT );
             ProcF();
@@ -260,10 +260,10 @@ public class AnalisadorSintatico {
                 CasaToken( WRITELN );
             CasaToken( A_PARENT );
             ProcExp();
-            do {
+            while( registro.getNumToken() == VIRGULA ) {
                 CasaToken( VIRGULA );
                 ProcExp();
-            } while( registro.getNumToken() == VIRGULA );
+            }
             CasaToken( F_PARENT );
             CasaToken( PONTO_VIRG );
         } else if( registro.getNumToken() == READLN ) {

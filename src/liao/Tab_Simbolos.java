@@ -105,6 +105,12 @@ public class Tab_Simbolos {
         return token.get(lexema);
     }
     
+    public Simbolo inserirConstante(String lexema){
+        Simbolo simbolo = new Simbolo(VALORCONSTANTE, lexema);
+        token.put(lexema, simbolo);
+        return token.get(lexema);
+    }
+    
     // Metodo para Verificar se existe Lexema
     public boolean existe (String lexema) {
         return token.containsKey(lexema);

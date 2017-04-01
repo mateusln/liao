@@ -64,7 +64,7 @@ public class AnalisadorLexico {
                     if(c == ' ' || (int)c==10){ 
                         estadoAtual = 0; // ignora espaço e \n
                         
-                    }else if (Arrays.toString(cadeiadeChar).contains(""+c)) {
+                    } else if (Arrays.toString(cadeiadeChar).contains(""+c)) {
                         // compara se o caractere esta na cadeia de char
                         lexema+=c;
                         estadoAtual = estadoFinal;
@@ -133,7 +133,8 @@ public class AnalisadorLexico {
                         if ( c ==(char) -1 ) {//erro
                             estadoAtual = estadoFinal;
                             System.out.println("Fim de arquivo nao esperado");
-                            return null;
+                            //return null;
+                            System.exit(0);
                         }
                     }
                     estadoAtual = 5;
@@ -253,7 +254,8 @@ public class AnalisadorLexico {
                         estadoAtual = 12;
                     } else {
                         devolve = true;
-                        tabela.inserir(lexema);
+                        System.out.println("inseri "+lexema);
+                        tabela.inserirConstante(lexema);
                         estadoAtual = estadoFinal;
                     }
                 break;            
