@@ -35,13 +35,13 @@ public class Liao {
         else
             leitor = new BufferedReader(new FileReader(fonte+=".l"));
         
-        AnalisadorSintatico analisadorSintatico = new AnalisadorSintatico(leitor);
+        //AnalisadorSintatico analisadorSintatico = new AnalisadorSintatico(leitor);
         
         
-        //AnalisadorLexico analisadorLexico = new AnalisadorLexico();
+        AnalisadorLexico analisadorLexico = new AnalisadorLexico();
         
-        //for(int i=0 ; i < 500 ; i++) //#teste
-          //AnalisadorLexico.analisar(leitor);
+        for(int i=0 ; i < 500 ; i++) //#teste
+          AnalisadorLexico.analisar(leitor);
         
         
         

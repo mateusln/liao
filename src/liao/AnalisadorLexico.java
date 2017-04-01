@@ -156,7 +156,7 @@ public class AnalisadorLexico {
                         estadoAtual = 7;
                     }else{
                         
-                        System.out.println("ERRO id apenas com _");
+                        System.out.println("LINHA: Lexema nao identificado");
                         lexema="";
                         return  null;
                     }
@@ -208,8 +208,11 @@ public class AnalisadorLexico {
                     if ( isHexadecimal(c) ) {
                         lexema+=c;
                         estadoAtual = estadoFinal;
+                        tabela.inserir(lexema);
+                    } else{
+                        System.out.println("LINHA :ERRO lexema não esperado");
+                        System.exit(0);
                     }
-
                     break;
 
                 case 11:
@@ -225,8 +228,8 @@ public class AnalisadorLexico {
 
                     break;
                     
-                case 12:
-                    if ( isStringValida(c) ) {
+                case 12: // valor de string, leu ' 
+                    if ( isStringValida(c) ) { //le qualquer char valido
                         lexema+=c;
                         estadoAtual = 12;
                     } else if ( c == '\'' ) {
@@ -245,6 +248,7 @@ public class AnalisadorLexico {
                         estadoAtual = 12;
                     } else {
                         devolve = true;
+                        tabela.inserir(lexema);
                         estadoAtual = estadoFinal;
                     }
                 break;            
