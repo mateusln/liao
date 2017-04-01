@@ -27,7 +27,7 @@ public class AnalisadorLexico {
     static String  lexema = "";
     static char c = ' ';
     static boolean devolve = false;
-    static int contaLinha=1;
+    public static int contaLinha=1;
     
     
     public AnalisadorLexico () {
@@ -241,7 +241,7 @@ public class AnalisadorLexico {
                         lexema+=c;
                         estadoAtual = 13;
                     } else if ( (int)c == 10 ) {
-                        System.out.println("erro - lexema não identificado");
+                        System.out.println(contaLinha+":erro - lexema não identificado");
                         System.exit(0);
                     }
                     
@@ -262,7 +262,7 @@ public class AnalisadorLexico {
         }
         
         //#teste
-        System.out.println("lexema "+lexema);
+        //System.out.println("lexema "+lexema);
         //
         
         

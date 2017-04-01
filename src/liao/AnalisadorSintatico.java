@@ -67,8 +67,9 @@ public class AnalisadorSintatico {
         
         if( registro.getLexema() != "" ) {
             ProcS();
+            System.exit(0);
             if( registro.getLexema() != "" ) {
-                System.out.println( /*Número da linha com erro + mensagem de erro */ );
+                System.out.println( /*Número da linha com erro + mensagem de erro */ "esesse");
                 System.exit(0);
             }
         } else {
@@ -80,12 +81,13 @@ public class AnalisadorSintatico {
     public void CasaToken( byte tokenRecebido ) throws IOException {
         if( tokenRecebido != (byte)registro.getNumToken() ) {
             //System.out.println( registro.getCont()+":token não esperado." );
-            System.out.println("ERRO");
-            System.out.println(tokenRecebido );
+            System.out.println("ERRO, linha "+automato.contaLinha);
+            System.out.println("Token recebeido "+tokenRecebido+" token esperado "+(byte)registro.getNumToken() );
             System.exit(0);
         } else {
             //registro = anLex.automato( registro.getMarcado(), registro.getC() );
             registro=AnalisadorLexico.analisar(leitor);
+            System.out.println("casei "+tokenRecebido);
         }
     }
 
@@ -125,7 +127,7 @@ public class AnalisadorSintatico {
                 CasaToken( ATRIBUICAO );
                 ProcExp();
             }
-            while( registro.getNumToken() == WHILE ) {
+            while( registro.getNumToken() == VIRGULA ) {
                 CasaToken( VIRGULA );
                 CasaToken( IDENTIFICADOR );
                 if( registro.getNumToken() == ATRIBUICAO ){
@@ -143,7 +145,7 @@ public class AnalisadorSintatico {
         else if( registro.getNumToken() == SUBTRACAO )
             CasaToken( SUBTRACAO );
         ProcT();
-        do {
+        while (registro.getNumToken() == SOMA || registro.getNumToken() == SUBTRACAO || registro.getNumToken() == OR ) {
             if( registro.getNumToken() == SOMA )
                 CasaToken( SOMA );
             else if( registro.getNumToken() == SUBTRACAO )
@@ -151,7 +153,7 @@ public class AnalisadorSintatico {
             else
                 CasaToken( OR );
             ProcT();
-        } while (registro.getNumToken() == SOMA || registro.getNumToken() == SUBTRACAO || registro.getNumToken() == OR );
+        } 
     }// fim ProcExpS
 
     public void ProcExp() throws IOException {
@@ -192,16 +194,16 @@ public class AnalisadorSintatico {
 
     public void ProcT() throws IOException {
         ProcF();
-        do {
+        while( registro.getNumToken() == ASTERISCO || registro.getNumToken() == BARRA_DIV || registro.getNumToken() == AND ) {
             if( registro.getNumToken() == ASTERISCO )
                 CasaToken( ASTERISCO );
             else if( registro.getNumToken() == BARRA_DIV )
                 CasaToken( BARRA_DIV );
-            else
+            else{
                 CasaToken( AND );
-
+            }
             ProcF();
-        } while( registro.getNumToken() == ASTERISCO || registro.getNumToken() == BARRA_DIV || registro.getNumToken() == AND );
+        } 
     }// fim ProcT
 
     public void ProcC() throws IOException {

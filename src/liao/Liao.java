@@ -30,18 +30,21 @@ public class Liao {
         String fonte= args[0]; //arquivo fonte 
         
         BufferedReader leitor;
+        
 	if(fonte.endsWith(".l"))
             leitor = new BufferedReader(new FileReader(fonte));
         else
             leitor = new BufferedReader(new FileReader(fonte+=".l"));
         
-        //AnalisadorSintatico analisadorSintatico = new AnalisadorSintatico(leitor);
+        AnalisadorSintatico analisadorSintatico = new AnalisadorSintatico(leitor);
         
         
-        AnalisadorLexico analisadorLexico = new AnalisadorLexico();
         
-        for(int i=0 ; i < 500 ; i++) //#teste
-          AnalisadorLexico.analisar(leitor);
+        //#teste
+        //AnalisadorLexico analisadorLexico = new AnalisadorLexico();
+        
+        //for(int i=0 ; i < 500 ; i++) //#teste
+          //AnalisadorLexico.analisar(leitor);
         
         
         

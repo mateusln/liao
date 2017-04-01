@@ -1,7 +1,6 @@
 /*teste*/
-
-string x='0hAF';
+integer y,x=1;
+string nome='mateus';
 main
 x=1+1;
 end
-___
