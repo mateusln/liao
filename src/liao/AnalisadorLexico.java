@@ -58,7 +58,7 @@ public class AnalisadorLexico {
                     
                     char [] cadeiadeChar = {'(',')',',','+','-','*',';'};
                     
-                    if( (int)c == 10)
+                    if( (int)c == 10 || (int)c == 13)
                         contaLinha++;
                     
                     if(c == ' ' || (int)c==10){ 

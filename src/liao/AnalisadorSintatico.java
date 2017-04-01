@@ -67,7 +67,8 @@ public class AnalisadorSintatico {
         
         if( registro.getLexema() != "" ) {
             ProcS();
-            System.exit(0);
+            //if( (byte)65535 )
+            System.exit(0); //#teste
             if( registro.getLexema() != "" ) {
                 System.out.println( /*Número da linha com erro + mensagem de erro */ "esesse");
                 System.exit(0);
@@ -86,8 +87,9 @@ public class AnalisadorSintatico {
             System.exit(0);
         } else {
             //registro = anLex.automato( registro.getMarcado(), registro.getC() );
+            
+            System.out.println("casei "+registro.getLexema() +" num na tabela "+tokenRecebido);
             registro=AnalisadorLexico.analisar(leitor);
-            System.out.println("casei "+tokenRecebido);
         }
     }
 
@@ -236,14 +238,17 @@ public class AnalisadorSintatico {
                 do {
                     ProcC();
                 } while( registro.getNumToken() == IDENTIFICADOR || registro.getNumToken() == WHILE || registro.getNumToken() == IF || registro.getNumToken() == WRITE || registro.getNumToken() == WRITELN || registro.getNumToken() == READLN );
+                CasaToken(END);
             } else
                 ProcC();
             if( registro.getNumToken() == ELSE ) {
                 CasaToken( ELSE );
                 if( registro.getNumToken() == BEGIN ){
+                    CasaToken(BEGIN);
                     do {
                         ProcC();
                     } while( registro.getNumToken() == IDENTIFICADOR || registro.getNumToken() == WHILE || registro.getNumToken() == IF || registro.getNumToken() == WRITE || registro.getNumToken() == WRITELN || registro.getNumToken() == READLN );
+                    
                     CasaToken( END );
                 } else
                     ProcC();
