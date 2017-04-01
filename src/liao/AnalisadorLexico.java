@@ -53,12 +53,13 @@ public class AnalisadorLexico {
             
             switch ( estadoAtual ) {
                 case 0: // estado inicial
-                    if(c == ' ' || (int)c==10) 
-                        estadoAtual = 0; // ignora espaço e \n
                     
                     char [] cadeiadeChar = {'(',')',',','+','-','*',';'};
                     
-                    if (Arrays.toString(cadeiadeChar).contains(""+c)) {
+                    if(c == ' ' || (int)c==10){ 
+                        estadoAtual = 0; // ignora espaço e \n
+                        
+                    }else if (Arrays.toString(cadeiadeChar).contains(""+c)) {
                         // compara se o caractere esta na cadeia de char
                         lexema+=c;
                         estadoAtual = estadoFinal;
@@ -248,19 +249,21 @@ public class AnalisadorLexico {
                     }
                 break;            
             }
+            
         }
         
         //#teste
         System.out.println("lexema "+lexema);
         //
         
-        // criar uma classe (pode ser com o nome Simbolo ou RegistroLexico) onde recebe o lexema para criar o objeto dessa classe ver tp1.doc n1 e n2
         
         //if (!EOF)
+        
         byte numToken= tabela.pesquisar(lexema);
         Simbolo simbolo = new Simbolo(numToken, lexema);
         lexema="";
         return simbolo;
+       
     }
     
     public static boolean isLetra( char c){

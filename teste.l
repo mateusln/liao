@@ -1,2 +1,5 @@
 /*teste*/
-int
+integer x=1;
+main
+x=1+1;
+end
