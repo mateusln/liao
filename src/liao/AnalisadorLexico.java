@@ -27,6 +27,7 @@ public class AnalisadorLexico {
     static String  lexema = "";
     static char c = ' ';
     static boolean devolve = false;
+    static int linha=1;
     
     
     public AnalisadorLexico () {
@@ -36,6 +37,7 @@ public class AnalisadorLexico {
     public static final Simbolo analisar(BufferedReader leitor) throws IOException {
         int estadoAtual = 0;
         final int estadoFinal = 14;
+        
         
         
         while ( estadoAtual != estadoFinal ) {
@@ -55,6 +57,9 @@ public class AnalisadorLexico {
                 case 0: // estado inicial
                     
                     char [] cadeiadeChar = {'(',')',',','+','-','*',';'};
+                    
+                    if( (int)c == 10)
+                    System.out.print(++linha+" ");
                     
                     if(c == ' ' || (int)c==10){ 
                         estadoAtual = 0; // ignora espaço e \n
@@ -158,7 +163,7 @@ public class AnalisadorLexico {
                         
                         System.out.println("LINHA: Lexema nao identificado");
                         lexema="";
-                        return  null;
+                        System.exit(0);
                     }
                     break;
                     
