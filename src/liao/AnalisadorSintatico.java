@@ -232,6 +232,7 @@ public class AnalisadorSintatico {
             CasaToken( F_PARENT );
             CasaToken( THEN );
             if( registro.getNumToken() == BEGIN ){
+                CasaToken( BEGIN );
                 do {
                     ProcC();
                 } while( registro.getNumToken() == IDENTIFICADOR || registro.getNumToken() == WHILE || registro.getNumToken() == IF || registro.getNumToken() == WRITE || registro.getNumToken() == WRITELN || registro.getNumToken() == READLN );
@@ -266,7 +267,7 @@ public class AnalisadorSintatico {
             CasaToken( IDENTIFICADOR );
             CasaToken( F_PARENT );
             CasaToken( PONTO_VIRG );
-        } else //Comando nulo
+        } else //Comando nulo 
             CasaToken( PONTO_VIRG );
     }// fim ProcC
 }
