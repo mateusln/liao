@@ -81,6 +81,12 @@ public class AnalisadorSintatico {
 
     public void CasaToken( byte tokenRecebido ) throws IOException {
         if( tokenRecebido != (byte)registro.getNumToken() ) {
+            
+            if(registro.getNumToken()==99){
+                System.out.println("Fim de arquivo nao esperado");
+                System.exit(0);
+            }
+            
             System.out.println( automato.contaLinha+":token não esperado [ "+ registro.getLexema()+" ]" );
             System.out.println("Token recebido "+tokenRecebido+" token esperado "+(byte)registro.getNumToken() );
             System.exit(0);

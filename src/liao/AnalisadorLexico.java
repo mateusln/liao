@@ -50,7 +50,7 @@ public class AnalisadorLexico {
                 
             if ( c ==(char) -1 ) {//#teste
                 estadoAtual = estadoFinal;
-                return null;
+                return new Simbolo((byte)99, "EOF");
             }
             
             switch ( estadoAtual ) {
