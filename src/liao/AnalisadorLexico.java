@@ -58,10 +58,10 @@ public class AnalisadorLexico {
                     
                     char [] cadeiadeChar = {'(',')',',','+','-','*',';'};
                     
-                    if( (int)c == 10 || (int)c == 13)
+                    if( (int)c == 10)
                         contaLinha++;
                     
-                    if(c == ' ' || (int)c==10){ 
+                    if(c == ' ' || (int)c==10 || (int)c == 13 || c=='\t'){ 
                         estadoAtual = 0; // ignora espaço e \n
                         
                     } else if (Arrays.toString(cadeiadeChar).contains(""+c)) {
@@ -131,7 +131,7 @@ public class AnalisadorLexico {
                     while (c!='*') {
                         c = (char) leitor.read();
                         
-                        if( (int)c == 10 || (int)c == 13)
+                        if( (int)c == 10 )
                         contaLinha++;
                         
                         if ( c ==(char) -1 ) {//erro
