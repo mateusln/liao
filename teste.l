@@ -1,19 +1,10 @@
-/* Exemplo de Programa na linguagem L */
-
-int n;
-string nome;
-boolean naoTerminou;
-final MAXITER<-10;
-
-/* Programa Principal
-
-write("Digite seu nome: ");
-readln(nome);
-naoTerminou<-TRUE;
-n<-0;
-while (naoTerminou) begin
-  writeln("Ola' ",nome);
-  n<-n+1;
-  naoTerminou<-n<MAXITER;
-endwhile
-
+/*teste*/
+byte y,x=1;
+string nome='mat|';
+main
+if(1<2) then begin
+x=1+1;
+end else begin
+    y=x+1;
+end
+end

@@ -245,7 +245,7 @@ public class AnalisadorLexico {
                     } else if ( c == '\'' ) {
                         lexema+=c;
                         estadoAtual = 13;
-                    } else if ( (int)c == 10 ) {
+                    } else {
                         System.out.println(contaLinha+":erro - lexema não identificado");
                         System.exit(0);
                     }
