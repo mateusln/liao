@@ -126,7 +126,7 @@ public class AnalisadorSintatico {
                 CasaToken( BOOLEAN );
             else if( registro.getNumToken() == BYTE )
                 CasaToken( BYTE );
-            else if( registro.getNumToken() == STRING )
+            else 
                 CasaToken( STRING );
 
             CasaToken( IDENTIFICADOR );
