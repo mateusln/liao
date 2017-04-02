@@ -130,9 +130,13 @@ public class AnalisadorLexico {
                 case 4: //leu '/' e '*', começa comentario
                     while (c!='*') {
                         c = (char) leitor.read();
+                        
+                        if( (int)c == 10 || (int)c == 13)
+                        contaLinha++;
+                        
                         if ( c ==(char) -1 ) {//erro
                             estadoAtual = estadoFinal;
-                            System.out.println("Fim de arquivo nao esperado");
+                            System.out.println(contaLinha+":fim de arquivo nao esperado.");
                             //return null;
                             System.exit(0);
                         }
@@ -162,7 +166,7 @@ public class AnalisadorLexico {
                         estadoAtual = 7;
                     }else{
                         
-                        System.out.println(contaLinha+": Lexema nao identificado");
+                        System.out.println(contaLinha+":lexema não identificado [ " +lexema+" ]");
                         lexema="";
                         System.exit(0);
                     }
@@ -197,12 +201,12 @@ public class AnalisadorLexico {
                         // (c != h) && (c != digito)
                         devolve = true;
                         estadoAtual = estadoFinal;
-                        tabela.inserir(lexema);
+                        tabela.inserirConstante(lexema);
                     }
 
                     break;
 
-                case 9:
+                case 9: //leu h de hexadecimal
                     if ( isHexadecimal(c) ) {
                         lexema+=c;
                         estadoAtual = 10;
@@ -214,9 +218,9 @@ public class AnalisadorLexico {
                     if ( isHexadecimal(c) ) {
                         lexema+=c;
                         estadoAtual = estadoFinal;
-                        tabela.inserir(lexema);
+                        tabela.inserirConstante(lexema);
                     } else{
-                        System.out.println(contaLinha+":ERRO lexema não esperado");
+                        System.out.println(contaLinha+":lexema não identificado [ " +lexema+" ]");
                         System.exit(0);
                     }
                     break;
@@ -229,7 +233,7 @@ public class AnalisadorLexico {
                         // c != Digito
                         devolve = true;
                         estadoAtual=estadoFinal;
-                        tabela.inserir(lexema);
+                        tabela.inserirConstante(lexema);
                     }
 
                     break;
@@ -254,7 +258,6 @@ public class AnalisadorLexico {
                         estadoAtual = 12;
                     } else {
                         devolve = true;
-                        System.out.println("inseri "+lexema);
                         tabela.inserirConstante(lexema);
                         estadoAtual = estadoFinal;
                     }
@@ -293,7 +296,7 @@ public class AnalisadorLexico {
 
     public static boolean isHexadecimal(char c){
         boolean isHexadecimal = false;
-        if ( (c >= 0 && c <= 9) || ( c >= 'A' && c <= 'F' ))
+        if ( (c >= '0' && c <= '9') || ( c >= 'A' && c <= 'F' ))
             isHexadecimal = true;
         return isHexadecimal;
     }

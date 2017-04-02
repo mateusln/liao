@@ -1,4 +1,4 @@
-/** Exemplo de Programa na linguagem L  - nao tem erro */
+/** Exemplo de Programa na linguagem L - nao tem erro */
 
 integer n;
 string nome;
@@ -16,4 +16,5 @@ main
     n=n+1;
     naoTerminou=n<MAXITER;
   end
+  
 end

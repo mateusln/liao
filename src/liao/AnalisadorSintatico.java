@@ -69,7 +69,7 @@ public class AnalisadorSintatico {
             ProcS();
             //if( (byte)65535 )
             System.exit(0); //#teste
-            if( registro.getLexema() != "" ) {
+            if( registro.getLexema() != "" ) {  
                 System.out.println( /*Número da linha com erro + mensagem de erro */ "esesse");
                 System.exit(0);
             }
@@ -81,9 +81,8 @@ public class AnalisadorSintatico {
 
     public void CasaToken( byte tokenRecebido ) throws IOException {
         if( tokenRecebido != (byte)registro.getNumToken() ) {
-            //System.out.println( registro.getCont()+":token não esperado." );
-            System.out.println("ERRO, linha "+automato.contaLinha);
-            System.out.println("Token recebeido "+tokenRecebido+" token esperado "+(byte)registro.getNumToken() );
+            System.out.println( automato.contaLinha+":token não esperado [ "+ registro.getLexema()+" ]" );
+            System.out.println("Token recebido "+tokenRecebido+" token esperado "+(byte)registro.getNumToken() );
             System.exit(0);
         } else {
             //registro = anLex.automato( registro.getMarcado(), registro.getC() );
@@ -188,7 +187,11 @@ public class AnalisadorSintatico {
             CasaToken( IDENTIFICADOR );
         else if( registro.getNumToken() == VALORCONSTANTE )
             CasaToken( VALORCONSTANTE );
-        else {
+        else if(registro.getNumToken() == TRUE){
+            CasaToken(TRUE);
+        }else if(registro.getNumToken() == FALSE){
+            CasaToken(FALSE);
+        }else{
             CasaToken( NOT );
             ProcF();
         }
@@ -223,7 +226,7 @@ public class AnalisadorSintatico {
                 CasaToken( BEGIN );
                 do {
                     ProcC();
-                } while( registro.getNumToken() == IDENTIFICADOR || registro.getNumToken() == WHILE || registro.getNumToken() == IF || registro.getNumToken() == WRITE || registro.getNumToken() == WRITELN || registro.getNumToken() == READLN  );
+                } while( registro.getNumToken() == IDENTIFICADOR || registro.getNumToken() == WHILE || registro.getNumToken() == IF || registro.getNumToken() == WRITE || registro.getNumToken() == WRITELN || registro.getNumToken() == READLN || registro.getNumToken() == PONTO_VIRG );
                 CasaToken( END );
             } else
                 ProcC();
@@ -237,7 +240,7 @@ public class AnalisadorSintatico {
                 CasaToken( BEGIN );
                 do {
                     ProcC();
-                } while( registro.getNumToken() == IDENTIFICADOR || registro.getNumToken() == WHILE || registro.getNumToken() == IF || registro.getNumToken() == WRITE || registro.getNumToken() == WRITELN || registro.getNumToken() == READLN );
+                } while( registro.getNumToken() == IDENTIFICADOR || registro.getNumToken() == WHILE || registro.getNumToken() == IF || registro.getNumToken() == WRITE || registro.getNumToken() == WRITELN || registro.getNumToken() == READLN || registro.getNumToken() == PONTO_VIRG);
                 CasaToken(END);
             } else
                 ProcC();
@@ -247,7 +250,7 @@ public class AnalisadorSintatico {
                     CasaToken(BEGIN);
                     do {
                         ProcC();
-                    } while( registro.getNumToken() == IDENTIFICADOR || registro.getNumToken() == WHILE || registro.getNumToken() == IF || registro.getNumToken() == WRITE || registro.getNumToken() == WRITELN || registro.getNumToken() == READLN );
+                    } while( registro.getNumToken() == IDENTIFICADOR || registro.getNumToken() == WHILE || registro.getNumToken() == IF || registro.getNumToken() == WRITE || registro.getNumToken() == WRITELN || registro.getNumToken() == READLN || registro.getNumToken() == PONTO_VIRG);
                     
                     CasaToken( END );
                 } else
