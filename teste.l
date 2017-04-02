@@ -1,7 +1,7 @@
-/** Exemplo de Programa na linguagem L - nao tem erro */
+/* Exemplo de Programa na linguagem L */
 
 integer n;
-string nome;
+string nome = 'AB''S''C';
 boolean naoTerminou;
 const MAXITER=10;
 
@@ -16,5 +16,3 @@ main
     n=n+1;
     naoTerminou=n<MAXITER;
   end
-  
-end
