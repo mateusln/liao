@@ -42,16 +42,20 @@ public class AnalisadorLexico {
         
         while ( estadoAtual != estadoFinal ) {
             
+            
+            
+            if ( c ==(char) -1 ) {//#teste
+                estadoAtual = estadoFinal;
+                return new Simbolo((byte)99, "EOF");
+            }
+            
+            
             if ( !devolve ) { // pega o proximo char se nao for para devolver o anterior
                 c = (char)leitor.read();
             }
             
             devolve = false;
                 
-            if ( c ==(char) -1 ) {//#teste
-                estadoAtual = estadoFinal;
-                return new Simbolo((byte)99, "EOF");
-            }
             
             switch ( estadoAtual ) {
                 case 0: // estado inicial
