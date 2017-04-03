@@ -29,6 +29,7 @@ public class Liao {
             
         String fonte= args[0]; //arquivo fonte 
         
+        
         BufferedReader leitor;
         
 	if(fonte.endsWith(".l"))

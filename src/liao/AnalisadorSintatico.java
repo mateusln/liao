@@ -83,7 +83,7 @@ public class AnalisadorSintatico {
         if( tokenRecebido != (byte)registro.getNumToken() ) {
             
             if(registro.getNumToken()==99){
-                System.out.println("Fim de arquivo nao esperado");
+                System.out.println(automato.contaLinha+":fim de arquivo nao esperado.");
                 System.out.println("Token recebido "+tokenRecebido+" token esperado "+(byte)registro.getNumToken() );
                 System.exit(0);
             }
