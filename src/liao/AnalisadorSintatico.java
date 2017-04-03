@@ -96,7 +96,6 @@ public class AnalisadorSintatico {
         } else {
             //registro = anLex.automato( registro.getMarcado(), registro.getC() );
             
-            System.out.println("casei "+registro.getLexema() +" num na tabela "+tokenRecebido);
             registro=AnalisadorLexico.analisar(leitor);
         }
     }
