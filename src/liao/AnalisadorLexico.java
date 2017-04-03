@@ -257,7 +257,7 @@ public class AnalisadorLexico {
                         lexema+=c;
                         estadoAtual = 13;
                     } else {
-                        System.out.println(contaLinha+":erro - lexema não identificado");
+                        System.out.println(contaLinha+":caractere invalido");
                         System.exit(0);
                     }
                     

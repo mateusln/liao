@@ -71,7 +71,7 @@ public class AnalisadorSintatico {
             //System.exit(0); //#teste
             //System.out.println(registro.getLexema());
             if( registro.getLexema() != "EOF" ) {  
-                System.out.println(automato.contaLinha+":lexema nao esperado [ "+registro.getLexema()+" ] ");
+                System.out.println(automato.contaLinha+":token nao esperado [ "+registro.getLexema()+" ] ");
                 System.exit(0);
             }else
                 System.exit(0);
@@ -86,12 +86,11 @@ public class AnalisadorSintatico {
             
             if(registro.getNumToken()==99){
                 System.out.println(automato.contaLinha+":fim de arquivo nao esperado.");
-                System.out.println("Token recebido "+tokenRecebido+" token esperado "+(byte)registro.getNumToken() );
+                //System.out.println("Token recebido "+tokenRecebido+" token esperado "+(byte)registro.getNumToken() );
                 System.exit(0);
             }
             
             System.out.println( automato.contaLinha+":token não esperado [ "+ registro.getLexema()+" ]" );
-            System.out.println("Token recebido "+tokenRecebido+" token esperado "+(byte)registro.getNumToken() );
             System.exit(0);
         } else {
             //registro = anLex.automato( registro.getMarcado(), registro.getC() );
