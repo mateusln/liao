@@ -11,10 +11,6 @@
  */
 package liao;
 
-/**
- *
- * @author anacr
- */
 public class Simbolo {
     private String lexema;
     private byte token;

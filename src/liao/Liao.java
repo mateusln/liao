@@ -38,17 +38,12 @@ public class Liao {
             leitor = new BufferedReader(new FileReader(fonte+=".l"));
         
         AnalisadorSintatico analisadorSintatico = new AnalisadorSintatico(leitor);
-        
-        
-        
+
         //#teste
         //AnalisadorLexico analisadorLexico = new AnalisadorLexico();
         
         //for(int i=0 ; i < 500 ; i++) //#teste
           //AnalisadorLexico.analisar(leitor);
-        
-        
-        
- 
+
     }
 }

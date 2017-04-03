@@ -15,10 +15,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-/**
- *
- * @author mateus
- */
 public class AnalisadorLexico {
     public static RegistroLexico registroLexico;
     public static Tab_Simbolos tabela;
@@ -37,30 +33,23 @@ public class AnalisadorLexico {
     public static final Simbolo analisar(BufferedReader leitor) throws IOException {
         int estadoAtual = 0;
         final int estadoFinal = 14;
-        
-        
-        
+
         while ( estadoAtual != estadoFinal ) {
-            
-            
-            
+
             if ( c ==(char) -1 ) {//#teste
                 estadoAtual = estadoFinal;
                 return new Simbolo((byte)99, "EOF");
             }
-            
-            
+
             if ( !devolve ) { // pega o proximo char se nao for para devolver o anterior
                 c = (char)leitor.read();
             }
             
             devolve = false;
-                
-            
+
             switch ( estadoAtual ) {
                 case 0: // estado inicial
-                    
-                    
+
                     //char [] cadeiadeChar = {'(',')',',','+','-','*',';'};
                     
                     if( (int)c == 10)
@@ -145,7 +134,7 @@ public class AnalisadorLexico {
                         if( (int)c == 10 )
                         contaLinha++;
                         
-                        if ( c ==(char) -1 ) {//erro
+                        if ( c ==(char) -1 ) { //erro
                             estadoAtual = estadoFinal;
                             System.out.println(contaLinha+":fim de arquivo nao esperado.");
                             //return null;
@@ -279,11 +268,7 @@ public class AnalisadorLexico {
         
         //#teste
         //System.out.println("lexema "+lexema);
-        //
-        
-        
-        //if (!EOF)
-        
+
         byte numToken= tabela.pesquisar(lexema);
         Simbolo simbolo = new Simbolo(numToken, lexema);
         lexema="";

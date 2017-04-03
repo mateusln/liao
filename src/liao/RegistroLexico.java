@@ -13,8 +13,6 @@ package liao;
 
 /**
  *
- * @author mateus
- * 
  * O token reconhecido deverá ser representado por um registro único de escopo
  * global contendo campo para o número do token, lexema, endereço de inserção na
  * tabela (somente para identificadores e palavras reservadas) e tipo (somente
@@ -82,7 +80,6 @@ public class RegistroLexico {
     public void setLinha (int cont) {
         this.linha = cont;
     }
-    
 
     /*
     public boolean getMarcado() {

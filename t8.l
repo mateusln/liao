@@ -1,4 +1,4 @@
-/** Exemplo de Programa na linguagem L - nao tem erro */
+/** Exemplo de Programa na linguagem L - faltando end fim de arquivo nao esperado */
 
 integer n;
 string nome;
