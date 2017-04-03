@@ -60,7 +60,8 @@ public class AnalisadorLexico {
             switch ( estadoAtual ) {
                 case 0: // estado inicial
                     
-                    char [] cadeiadeChar = {'(',')',',','+','-','*',';'};
+                    
+                    //char [] cadeiadeChar = {'(',')',',','+','-','*',';'};
                     
                     if( (int)c == 10)
                         contaLinha++;
@@ -68,8 +69,9 @@ public class AnalisadorLexico {
                     if(c == ' ' || (int)c==10 || (int)c == 13 || c=='\t'){ 
                         estadoAtual = 0; // ignora espaço e \n
                         
-                    } else if (Arrays.toString(cadeiadeChar).contains(""+c)) {
-                        // compara se o caractere esta na cadeia de char
+                    //} else if (Arrays.toString(cadeiadeChar).contains(""+c)) {
+                    } else if (c=='(' || c== ')' || c== ',' || c== '+' || c== '-' || c== '*' || c== ';') {  
+                    // compara se o caractere esta na cadeia de char
                         lexema+=c;
                         estadoAtual = estadoFinal;
                     } else if ( c == '<' || c == '>' || c == '=' ) {
@@ -97,6 +99,11 @@ public class AnalisadorLexico {
                         //System.out.println("entrei");
                         lexema+=c;
                         estadoAtual = 11;
+                    }else{
+                        if((int)c!=65535){
+                        System.out.println(contaLinha+":lexema nao identificado [ "+c +" ]" );
+                        System.exit(0);
+                        }
                     }
                     
                     break;
