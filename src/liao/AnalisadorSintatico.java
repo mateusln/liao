@@ -68,11 +68,13 @@ public class AnalisadorSintatico {
         if( registro.getLexema() != "" ) {
             ProcS();
             //if( (byte)65535 )
-            System.exit(0); //#teste
-            if( registro.getLexema() != "" ) {  
-                System.out.println( /*Número da linha com erro + mensagem de erro */ "esesse");
+            //System.exit(0); //#teste
+            //System.out.println(registro.getLexema());
+            if( registro.getLexema() != "EOF" ) {  
+                System.out.println(automato.contaLinha+":lexema nao esperado [ "+registro.getLexema()+" ] ");
                 System.exit(0);
-            }
+            }else
+                System.exit(0);
         } else {
             System.out.println( /*Número da linha com erro + mensagem de erro */ );
             System.exit(0);

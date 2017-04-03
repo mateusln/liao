@@ -1,6 +1,6 @@
 /** Exemplo de Programa na linguagem L  - nao tem erro */
 
-integer n[ome;
+integer nome=0h11;
 string nome;
 boolean naoTerminou;
 const MAXITER=10;
@@ -12,7 +12,7 @@ main
   naoTerminou=true;
   n=0;
   while (naoTerminou) begin
-    writeln("Ola",nome);
+    writeln('Ola',nome);
     n=n+1;
     naoTerminou=n<MAXITER;
   end
