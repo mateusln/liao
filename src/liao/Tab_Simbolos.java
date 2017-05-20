@@ -95,6 +95,7 @@ public class Tab_Simbolos {
     // Metodo de Pesquisa
     public byte pesquisar (String lexema) {
         Simbolo s = token.get(lexema);
+        //deve retornar o numero do endereco 
         return s.getNumToken();
     }
     

@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class AnalisadorLexico {
-    public static RegistroLexico registroLexico;
+    //public static RegistroLexico registroLexico;
     public static Tab_Simbolos tabela;
     private static boolean FDA = false;
     static int numLinha = 1;
@@ -85,7 +85,6 @@ public class AnalisadorLexico {
                         lexema+=c;
                         estadoAtual = 8;
                     } else if ( isDigito(c) && c != '0' ) {
-                        //System.out.println("entrei");
                         lexema+=c;
                         estadoAtual = 11;
                     }else{
@@ -245,7 +244,10 @@ public class AnalisadorLexico {
                     } else if ( c == '\'' ) {
                         lexema+=c;
                         estadoAtual = 13;
-                    } else {
+                    } else if( (int)c == 10 || (int)c==13 ){
+                        System.out.println(contaLinha+":lexema nao esperado");
+                        System.exit(0);
+                    }else {
                         System.out.println(contaLinha+":caractere invalido");
                         System.exit(0);
                     }
