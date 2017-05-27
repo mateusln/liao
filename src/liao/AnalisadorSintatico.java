@@ -118,7 +118,20 @@ public class AnalisadorSintatico {
             CasaToken( CONST );
             CasaToken( IDENTIFICADOR );
             CasaToken( ATRIBUICAO );
-            ProcExp();
+            if( registro.getNumToken() == SOMA )
+                CasaToken( SOMA );
+            else if( registro.getNumToken() == SUBTRACAO )
+                CasaToken( SUBTRACAO );
+            
+            if(registro.getNumToken() == VALORCONSTANTE)
+                CasaToken(VALORCONSTANTE);
+            else if(registro.getNumToken()== TRUE)
+                CasaToken(TRUE);
+            else
+                CasaToken(FALSE);
+            
+                     
+            //ProcExp();
             CasaToken( PONTO_VIRG );
         } else {
             if( registro.getNumToken() == INTEGER )

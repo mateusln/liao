@@ -3,7 +3,7 @@
 integer n;
 string nome;
 boolean naoTerminou;
-const MAXITER=10;
+const MAXITER=0hAA;
 
 /* Programa Principal */
 main
@@ -12,7 +12,7 @@ main
   naoTerminou=true;
   n=0;
   while (naoTerminou) begin
-    writeln('Ola '' ,nome);
+    writeln('Ola '' ',nome);
     n=n+1;
     naoTerminou=n<MAXITER;
   end
