@@ -174,17 +174,31 @@ public class AnalisadorSintatico {
 
     public String ProcExpS() throws IOException {
         String Exps_tipo="";
+        boolean flagNegativo=false;
+        
         if( registro.getNumToken() == SOMA )
             CasaToken( SOMA );
-        else if( registro.getNumToken() == SUBTRACAO )
+        else if( registro.getNumToken() == SUBTRACAO ){
             CasaToken( SUBTRACAO );
-        Exps_tipo=ProcT();
+            flagNegativo=true;
+        }
+        
+        String t_tipo=ProcT();
+        
+        if(flagNegativo && t_tipo=="tipo_byte"){
+            t_tipo="tipo_inteiro";
+            Exps_tipo=t_tipo;
+        }else{
+            Exps_tipo=t_tipo;
+        }
+        
         while (registro.getNumToken() == SOMA || registro.getNumToken() == SUBTRACAO || registro.getNumToken() == OR ) {
             if( registro.getNumToken() == SOMA )
                 CasaToken( SOMA );
-            else if( registro.getNumToken() == SUBTRACAO )
+            else if( registro.getNumToken() == SUBTRACAO ){
                 CasaToken( SUBTRACAO );
-            else
+            
+            }else
                 CasaToken( OR );
             ProcT();
         }
