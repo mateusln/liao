@@ -42,6 +42,38 @@ public class Simbolo {
     }
     
     
+    public Simbolo(byte token, String lexema, int endereco, String tipo) {
+        this.token = token;
+        this.lexema = lexema;
+        this.tipo = tipo;
+        this.endereco= endereco;
+    }
+
+    public String getClasse() {
+        return classe;
+    }
+
+    public void setClasse(String classe) {
+        this.classe = classe;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public int getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(int endereco) {
+        this.endereco = endereco;
+    }
+    
+    
     
     public String getLexema() {
         return lexema;

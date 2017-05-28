@@ -1,9 +1,10 @@
 /* Exemplo de Programa na linguagem L */
 
-integer n;
+integer x;
+integer n=1;
 string nome;
 boolean naoTerminou;
-const MAXITER=0hAA;
+const MAXITER=1;
 
 /* Programa Principal */
 main

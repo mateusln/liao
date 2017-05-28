@@ -114,6 +114,9 @@ public class AnalisadorSintatico {
     }// fim ProcS
 
     public void ProcD() throws IOException {
+        String id_tipo="";
+        
+        
         if( registro.getNumToken() == CONST ) {
             CasaToken( CONST );
             CasaToken( IDENTIFICADOR );
@@ -129,24 +132,33 @@ public class AnalisadorSintatico {
                 CasaToken(TRUE);
             else
                 CasaToken(FALSE);
-            
-                     
-            //ProcExp();
+                                
             CasaToken( PONTO_VIRG );
         } else {
-            if( registro.getNumToken() == INTEGER )
+            if( registro.getNumToken() == INTEGER ){
                 CasaToken( INTEGER );
-            else if( registro.getNumToken() == BOOLEAN )
+                id_tipo="tipo_integer";
+            }else if( registro.getNumToken() == BOOLEAN ){
                 CasaToken( BOOLEAN );
-            else if( registro.getNumToken() == BYTE )
+                id_tipo="tipo_boolean";
+            }else if( registro.getNumToken() == BYTE ){
                 CasaToken( BYTE );
-            else 
+                id_tipo="tipo_byte";
+            }else{ 
                 CasaToken( STRING );
-
+                id_tipo="tipo_string";
+            }
             CasaToken( IDENTIFICADOR );
+            registro.setClasse("var");
+            
             if( registro.getNumToken() == ATRIBUICAO ) {
                 CasaToken( ATRIBUICAO );
-                ProcExp();
+                String Exp_tipo = "";
+                Exp_tipo=ProcExp();
+                if(id_tipo!=Exp_tipo){
+                    System.out.println(id_tipo+" "+Exp_tipo);
+                    System.out.println("ERRO TIPO incompativel");
+                }
             }
             while( registro.getNumToken() == VIRGULA ) {
                 CasaToken( VIRGULA );
@@ -160,12 +172,13 @@ public class AnalisadorSintatico {
         }
     } // fim ProcD
 
-    public void ProcExpS() throws IOException {
+    public String ProcExpS() throws IOException {
+        String Exps_tipo="";
         if( registro.getNumToken() == SOMA )
             CasaToken( SOMA );
         else if( registro.getNumToken() == SUBTRACAO )
             CasaToken( SUBTRACAO );
-        ProcT();
+        Exps_tipo=ProcT();
         while (registro.getNumToken() == SOMA || registro.getNumToken() == SUBTRACAO || registro.getNumToken() == OR ) {
             if( registro.getNumToken() == SOMA )
                 CasaToken( SOMA );
@@ -174,11 +187,15 @@ public class AnalisadorSintatico {
             else
                 CasaToken( OR );
             ProcT();
-        } 
+        }
+        
+        return Exps_tipo;
     }// fim ProcExpS
 
-    public void ProcExp() throws IOException {
-        ProcExpS();
+    public String ProcExp() throws IOException {
+        String Exp_tipo="";
+        Exp_tipo=ProcExpS();
+        
         if( registro.getNumToken() == IGUAL || registro.getNumToken() == ATRIBUICAO || registro.getNumToken() == MENOR || registro.getNumToken() == MAIOR || registro.getNumToken() == MENORIGUAL || registro.getNumToken() == MAIORIGUAL ){
             if( registro.getNumToken() == IGUAL )
                 CasaToken( IGUAL );
@@ -195,9 +212,12 @@ public class AnalisadorSintatico {
 
             ProcExpS();
         }
+        return Exp_tipo;
     }// fim ProcExp
 
-    public void ProcF() throws IOException {
+    public String ProcF() throws IOException {
+        String F_tipo="";
+        
         if( registro.getNumToken() == A_PARENT ) {
             CasaToken( A_PARENT );
             ProcExp();
@@ -205,9 +225,14 @@ public class AnalisadorSintatico {
         }
         else if( registro.getNumToken() == IDENTIFICADOR )
             CasaToken( IDENTIFICADOR );
-        else if( registro.getNumToken() == VALORCONSTANTE )
+        else if( registro.getNumToken() == VALORCONSTANTE ){
+            String temp=registro.getLexema(); //armazena o lex antes de passar pelo CT
             CasaToken( VALORCONSTANTE );
-        else if(registro.getNumToken() == TRUE){
+            //regra 02
+            //pega o tipo da tabela porque o programa so terá ele depois de passar pelo CT e inserir na tabela
+            F_tipo=AnalisadorLexico.tabela.getSimbolo(temp).getTipo();
+        
+        }else if(registro.getNumToken() == TRUE){
             CasaToken(TRUE);
         }else if(registro.getNumToken() == FALSE){
             CasaToken(FALSE);
@@ -215,10 +240,14 @@ public class AnalisadorSintatico {
             CasaToken( NOT );
             ProcF();
         }
+        
+        return F_tipo;
     }//fim ProcF
 
-    public void ProcT() throws IOException {
-        ProcF();
+    public String ProcT() throws IOException {
+        String T_tipo="";
+        
+        T_tipo=ProcF();
         while( registro.getNumToken() == ASTERISCO || registro.getNumToken() == BARRA_DIV || registro.getNumToken() == AND ) {
             if( registro.getNumToken() == ASTERISCO )
                 CasaToken( ASTERISCO );
@@ -229,6 +258,7 @@ public class AnalisadorSintatico {
             }
             ProcF();
         } 
+        return T_tipo;
     }// fim ProcT
 
     public void ProcC() throws IOException {
