@@ -1,7 +1,7 @@
 /* Exemplo de Programa na linguagem L */
 
 integer x;
-integer n=-1;
+integer n=1;
 string nome='1';
 boolean naoTerminou;
 const MAXITER=1;

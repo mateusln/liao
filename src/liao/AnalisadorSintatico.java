@@ -137,7 +137,7 @@ public class AnalisadorSintatico {
         } else {
             if( registro.getNumToken() == INTEGER ){
                 CasaToken( INTEGER );
-                id_tipo="tipo_integer";
+                id_tipo="tipo_inteiro";
             }else if( registro.getNumToken() == BOOLEAN ){
                 CasaToken( BOOLEAN );
                 id_tipo="tipo_boolean";
@@ -156,8 +156,10 @@ public class AnalisadorSintatico {
                 String Exp_tipo = "";
                 Exp_tipo=ProcExp();
                 if(id_tipo!=Exp_tipo){
-                    System.out.println(id_tipo+" "+Exp_tipo);
-                    System.out.println("ERRO TIPO incompativel");
+                    if( !(id_tipo == "tipo_inteiro" && Exp_tipo=="tipo_byte")){
+                        System.out.println(id_tipo+" "+Exp_tipo);
+                        System.out.println("ERRO TIPO incompativel");
+                    }
                 }
             }
             while( registro.getNumToken() == VIRGULA ) {

@@ -200,7 +200,10 @@ public class AnalisadorLexico {
                         // (c != h) && (c != digito)
                         devolve = true;
                         estadoAtual = estadoFinal;
-                        tabela.inserirConstante(lexema, "tipo_integer");
+                        if(Integer.parseInt(lexema)>0 && Integer.parseInt(lexema)<255)
+                            tabela.inserirConstante(lexema, "tipo_byte"); 
+                        else
+                            tabela.inserirConstante(lexema, "tipo_inteiro");
                     }
 
                     break;
@@ -217,7 +220,7 @@ public class AnalisadorLexico {
                     if ( isHexadecimal(c) ) {
                         lexema+=c;
                         estadoAtual = estadoFinal;
-                        tabela.inserirConstante(lexema, "tipo_hexa");
+                        tabela.inserirConstante(lexema, "tipo_inteiro");
                     } else{
                         System.out.println(contaLinha+":lexema não identificado [ " +lexema+" ]");
                         System.exit(0);
@@ -232,7 +235,10 @@ public class AnalisadorLexico {
                         // c != Digito
                         devolve = true;
                         estadoAtual=estadoFinal;
-                        tabela.inserirConstante(lexema, "tipo_integer");
+                        if(Integer.parseInt(lexema)>0 && Integer.parseInt(lexema)<255)
+                            tabela.inserirConstante(lexema, "tipo_byte"); 
+                        else
+                            tabela.inserirConstante(lexema, "tipo_inteiro");
                     }
 
                     break;
