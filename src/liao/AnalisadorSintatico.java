@@ -148,9 +148,10 @@ public class AnalisadorSintatico {
                 CasaToken( STRING );
                 id_tipo="tipo_string";
             }
+            String lexTemp=registro.getLexema();
             CasaToken( IDENTIFICADOR );
-            registro.setClasse("var");
-            
+            AnalisadorLexico.tabela.getSimbolo(lexTemp).setClasse("var");
+            System.out.println("setei "+AnalisadorLexico.tabela.getSimbolo(lexTemp).getLexema());
             if( registro.getNumToken() == ATRIBUICAO ) {
                 CasaToken( ATRIBUICAO );
                 String Exp_tipo = "";
