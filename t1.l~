@@ -2,7 +2,7 @@
 
 integer x;
 integer n=1;
-string nome='1';
+string nome;
 boolean naoTerminou;
 const MAXITER=1;
 
