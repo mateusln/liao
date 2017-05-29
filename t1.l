@@ -1,6 +1,6 @@
 /* Exemplo de Programa na linguagem L */
 
-byte n=0;
+boolean n=true and false;
 boolean n=(true);
 string nome='1';
 boolean naoTerminou;

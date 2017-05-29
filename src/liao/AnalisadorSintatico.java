@@ -291,7 +291,19 @@ public class AnalisadorSintatico {
             }
             String f1_tipo=T_tipo;
             String f2_tipo=ProcF();
-            
+            if(t_op=="multi" || t_op=="div"){
+                if(f1_tipo=="tipo_logico" || f1_tipo=="tipo_string" || f2_tipo=="tipo_logico" || f2_tipo=="tipo_string"){
+                    System.out.println(AnalisadorLexico.numLinha+":tipos incompativeis");
+                    System.exit(0);
+                }
+                T_tipo="tipo_inteiro";
+            }else if(t_op=="and"){
+                if(f1_tipo!="tipo_logico" || f2_tipo!="tipo_logico"){
+                    System.out.println(AnalisadorLexico.numLinha+":tipos incompativeis");
+                    System.exit(0);
+                }
+                T_tipo="tipo_logico";
+            }
             
         } 
         return T_tipo;
