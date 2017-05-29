@@ -250,8 +250,8 @@ public class AnalisadorSintatico {
     }// fim ProcExpS
 
     public String ProcExp() throws IOException {
-        String Exp_tipo;
-        Exp_tipo=ProcExpS();
+        String expS_tipo;
+        expS_tipo=ProcExpS();
         String logicosOperador="";
         
         if( registro.getNumToken() == IGUAL || registro.getNumToken() == ATRIBUICAO || registro.getNumToken() == MENOR || registro.getNumToken() == MAIOR || registro.getNumToken() == MENORIGUAL || registro.getNumToken() == MAIORIGUAL ){
@@ -273,9 +273,22 @@ public class AnalisadorSintatico {
                 CasaToken( MAIORIGUAL );
                 logicosOperador="maiorigual";
             }
-            ProcExpS();
+            String expS2_tipo =ProcExpS();
+            if(logicosOperador=="igualdade"){
+                if (expS_tipo != expS2_tipo){
+                    if( !(expS_tipo=="tipo_inteiro" || expS_tipo=="tipo_byte") ){
+                        System.out.println(AnalisadorLexico.contaLinha + ":tipos incompatveis");
+                        System.exit(0);
+                    }else if(!(expS2_tipo=="tipo_inteiro" || expS2_tipo=="tipo_byte") ){
+                        System.out.println(AnalisadorLexico.contaLinha + ":tipos incompatveis");
+                        System.exit(0);
+                    }
+                }
+            }
+            
+            expS_tipo="tipo_logico";
         }
-        return Exp_tipo;
+        return expS_tipo;
     }// fim ProcExp
 
     public String ProcF() throws IOException {

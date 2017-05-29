@@ -2,7 +2,7 @@
 
 integer n=1 + 2;
 string nome='1'+'2';
-boolean naoTerminou=true and false;
+boolean naoTerminou= 2 == 1;
 
 /* Programa Principal */
 main
@@ -10,7 +10,7 @@ main
   readln(nome);
   naoTerminou=true;
   n=0;
-  while (naoTerminou=true) begin
+  while (naoTerminou) begin
     writeln('Ola '' ',nome);
     n=n+1;
     naoTerminou=n<MAXITER;
