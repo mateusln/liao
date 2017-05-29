@@ -10,7 +10,7 @@ main
   readln(nome);
   naoTerminou=true;
   n=0;
-  while (naoTerminou) begin
+  while (naoTerminou=true) begin
     writeln('Ola '' ',nome);
     n=n+1;
     naoTerminou=n<MAXITER;

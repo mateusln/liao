@@ -250,23 +250,29 @@ public class AnalisadorSintatico {
     }// fim ProcExpS
 
     public String ProcExp() throws IOException {
-        String Exp_tipo="";
+        String Exp_tipo;
         Exp_tipo=ProcExpS();
+        String logicosOperador="";
         
         if( registro.getNumToken() == IGUAL || registro.getNumToken() == ATRIBUICAO || registro.getNumToken() == MENOR || registro.getNumToken() == MAIOR || registro.getNumToken() == MENORIGUAL || registro.getNumToken() == MAIORIGUAL ){
-            if( registro.getNumToken() == IGUAL )
+            if( registro.getNumToken() == IGUAL ){
                 CasaToken( IGUAL );
-            else if( registro.getNumToken() == ATRIBUICAO )
+                logicosOperador="igualdade";
+            }else if( registro.getNumToken() == ATRIBUICAO ){
                 CasaToken( ATRIBUICAO );
-            else if( registro.getNumToken() == MENOR )
+            }else if( registro.getNumToken() == MENOR ){
                 CasaToken( MENOR );
-            else if( registro.getNumToken() == MAIOR )
+                logicosOperador="menor";
+            }else if( registro.getNumToken() == MAIOR ){
                 CasaToken( MAIOR );
-            else if( registro.getNumToken() == MENORIGUAL )
+                logicosOperador="maior";
+            }else if( registro.getNumToken() == MENORIGUAL ){
                 CasaToken( MENORIGUAL );
-            else
+                logicosOperador="menorigual";
+            }else{
                 CasaToken( MAIORIGUAL );
-
+                logicosOperador="maiorigual";
+            }
             ProcExpS();
         }
         return Exp_tipo;
