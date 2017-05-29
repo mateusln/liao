@@ -285,8 +285,8 @@ public class AnalisadorSintatico {
                     }
                 }
             }
-            
-            expS_tipo="tipo_logico";
+            //#terminar regra 25 de verificação de tipos
+            expS_tipo="tipo_logico"; //se ele chegou ate aqui a exp vai ser logica
         }
         return expS_tipo;
     }// fim ProcExp
