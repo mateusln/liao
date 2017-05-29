@@ -140,7 +140,7 @@ public class AnalisadorSintatico {
                 id_tipo="tipo_inteiro";
             }else if( registro.getNumToken() == BOOLEAN ){
                 CasaToken( BOOLEAN );
-                id_tipo="tipo_boolean";
+                id_tipo="tipo_logico";
             }else if( registro.getNumToken() == BYTE ){
                 CasaToken( BYTE );
                 id_tipo="tipo_byte";
@@ -151,7 +151,7 @@ public class AnalisadorSintatico {
             String lexTemp=registro.getLexema();
             CasaToken( IDENTIFICADOR );
             AnalisadorLexico.tabela.getSimbolo(lexTemp).setClasse("var");
-            System.out.println("setei "+AnalisadorLexico.tabela.getSimbolo(lexTemp).getLexema());
+            AnalisadorLexico.tabela.getSimbolo(lexTemp).setTipo(id_tipo);
             if( registro.getNumToken() == ATRIBUICAO ) {
                 CasaToken( ATRIBUICAO );
                 String Exp_tipo = "";
@@ -159,7 +159,7 @@ public class AnalisadorSintatico {
                 if(id_tipo!=Exp_tipo){
                     if( !(id_tipo == "tipo_inteiro" && Exp_tipo=="tipo_byte")){
                         System.out.println(id_tipo+" "+Exp_tipo);
-                        System.out.println("ERRO TIPO incompativel");
+                        System.out.println(automato.contaLinha+":ERRO TIPO incompativel");
                     }
                 }
             }
@@ -237,12 +237,18 @@ public class AnalisadorSintatico {
         
         if( registro.getNumToken() == A_PARENT ) {
             CasaToken( A_PARENT );
-            ProcExp();
+            F_tipo=ProcExp();
             CasaToken( F_PARENT );
         }
-        else if( registro.getNumToken() == IDENTIFICADOR )
+        else if( registro.getNumToken() == IDENTIFICADOR ){
+            String lexTemp=registro.getLexema();
             CasaToken( IDENTIFICADOR );
-        else if( registro.getNumToken() == VALORCONSTANTE ){
+            Simbolo simboloTemp=AnalisadorLexico.tabela.getSimbolo(lexTemp);//busca o lex na tabela de simbolos
+            if(simboloTemp.getClasse()==null || simboloTemp.getClasse()=="")
+                System.out.println(AnalisadorLexico.contaLinha+":"+simboloTemp.getLexema()+" ERRO, nao declarado");
+            else
+                F_tipo=simboloTemp.getTipo();
+        }else if( registro.getNumToken() == VALORCONSTANTE ){
             String temp=registro.getLexema(); //armazena o lex antes de passar pelo CT
             CasaToken( VALORCONSTANTE );
             //regra 02
@@ -251,11 +257,17 @@ public class AnalisadorSintatico {
         
         }else if(registro.getNumToken() == TRUE){
             CasaToken(TRUE);
+            F_tipo="tipo_logico";
         }else if(registro.getNumToken() == FALSE){
             CasaToken(FALSE);
+            F_tipo="tipo_logico";
         }else{
             CasaToken( NOT );
-            ProcF();
+            String f1_tipo=ProcF();
+            if(f1_tipo=="tipo_logico")
+                F_tipo=f1_tipo;
+            else
+                System.out.println(automato.contaLinha+":ERRO, tipos imcompativeis ");
         }
         
         return F_tipo;
@@ -266,14 +278,21 @@ public class AnalisadorSintatico {
         
         T_tipo=ProcF();
         while( registro.getNumToken() == ASTERISCO || registro.getNumToken() == BARRA_DIV || registro.getNumToken() == AND ) {
-            if( registro.getNumToken() == ASTERISCO )
+            String t_op="";
+            if( registro.getNumToken() == ASTERISCO ){
                 CasaToken( ASTERISCO );
-            else if( registro.getNumToken() == BARRA_DIV )
+                t_op="multi";
+            }else if( registro.getNumToken() == BARRA_DIV ){
                 CasaToken( BARRA_DIV );
-            else{
+                t_op="div";
+            }else{
                 CasaToken( AND );
+                t_op="and";
             }
-            ProcF();
+            String f1_tipo=T_tipo;
+            String f2_tipo=ProcF();
+            
+            
         } 
         return T_tipo;
     }// fim ProcT

@@ -200,7 +200,7 @@ public class AnalisadorLexico {
                         // (c != h) && (c != digito)
                         devolve = true;
                         estadoAtual = estadoFinal;
-                        if(Integer.parseInt(lexema)>0 && Integer.parseInt(lexema)<255)
+                        if(Integer.parseInt(lexema)>=0 && Integer.parseInt(lexema)<=255)
                             tabela.inserirConstante(lexema, "tipo_byte"); 
                         else
                             tabela.inserirConstante(lexema, "tipo_inteiro");
@@ -235,7 +235,7 @@ public class AnalisadorLexico {
                         // c != Digito
                         devolve = true;
                         estadoAtual=estadoFinal;
-                        if(Integer.parseInt(lexema)>0 && Integer.parseInt(lexema)<255)
+                        if(Integer.parseInt(lexema)>=0 && Integer.parseInt(lexema)<=255)
                             tabela.inserirConstante(lexema, "tipo_byte"); 
                         else
                             tabela.inserirConstante(lexema, "tipo_inteiro");
