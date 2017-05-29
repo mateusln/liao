@@ -1,9 +1,8 @@
 /* Exemplo de Programa na linguagem L */
 
-boolean n=true and false;
-boolean n=(true);
-string nome='1';
-boolean naoTerminou;
+integer n=1 + 2;
+string nome='1'+'2';
+boolean naoTerminou=true and false;
 
 /* Programa Principal */
 main

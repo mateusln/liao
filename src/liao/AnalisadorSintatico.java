@@ -178,6 +178,7 @@ public class AnalisadorSintatico {
     public String ProcExpS() throws IOException {
         String Exps_tipo="";
         boolean flagNegativo=false;
+        String t_op="";
         
         if( registro.getNumToken() == SOMA )
             CasaToken( SOMA );
@@ -196,14 +197,53 @@ public class AnalisadorSintatico {
         }
         
         while (registro.getNumToken() == SOMA || registro.getNumToken() == SUBTRACAO || registro.getNumToken() == OR ) {
-            if( registro.getNumToken() == SOMA )
+            if( registro.getNumToken() == SOMA ){
                 CasaToken( SOMA );
-            else if( registro.getNumToken() == SUBTRACAO ){
+                t_op="adicao";
+            }else if( registro.getNumToken() == SUBTRACAO ){
                 CasaToken( SUBTRACAO );
-            
-            }else
+                t_op="subtracao";
+            }else{
                 CasaToken( OR );
-            ProcT();
+                t_op="or";
+            }
+            String t2_tipo=ProcT();
+            
+            if(t_op=="adicao" || t_op=="subtracao"){
+                if(t_tipo=="tipo_logico" || t2_tipo=="tipo_logico"){
+                    System.out.println(AnalisadorLexico.contaLinha+":tipos incompatveis");
+                    System.exit(0);
+                }
+                
+                Exps_tipo="tipo_inteiro";
+                if(t_op=="adicao"){
+                    /*if( (t_tipo=="tipo_string" && t2_tipo!="tipo_string") || (t_tipo!="tipo_string" && t_tipo=="tipo_string") ){
+                        System.out.println(AnalisadorLexico.contaLinha + ":tipos incompatveis");
+                        System.exit(0);
+                    }
+                    Exps_tipo="tipo_string";*/
+                    if( (t_tipo=="tipo_string" && t2_tipo=="tipo_string") ){
+                        
+                        Exps_tipo="tipo_string";
+                        
+                    }else if( (t_tipo=="tipo_string" && t2_tipo!="tipo_string") || (t_tipo!="tipo_string" && t_tipo=="tipo_string") ){
+                        System.out.println(AnalisadorLexico.contaLinha + ":tipos incompatveis");
+                        System.exit(0);
+                    }
+                    
+                }else if(t_tipo=="tipo_string" || t2_tipo=="tipo_string"){
+                    System.out.println(AnalisadorLexico.contaLinha + ":tipos incompatveis");
+                    System.exit(0);
+                }
+                
+            }else{//caso OR
+                if(t_tipo!="tipo_logico" || t2_tipo!="tipo_logico"){
+                    System.out.println(AnalisadorLexico.contaLinha + ":tipos incompatveis");
+                    System.exit(0);
+                }
+                Exps_tipo="tipo_logico";
+            }
+                
         }
         
         return Exps_tipo;
