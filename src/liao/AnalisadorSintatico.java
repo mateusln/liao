@@ -284,6 +284,11 @@ public class AnalisadorSintatico {
                         System.exit(0);
                     }
                 }
+            }else if(logicosOperador!="diferenca"){
+                if(expS_tipo=="tipo_string" || expS2_tipo=="tipo_byte" || expS_tipo=="tipo_byte" || expS2_tipo=="tipo_string"){
+                    System.out.println(AnalisadorLexico.contaLinha + ":tipos incompatveis");
+                        System.exit(0);
+                }
             }
             //#terminar regra 25 de verificação de tipos
             expS_tipo="tipo_logico"; //se ele chegou ate aqui a exp vai ser logica
