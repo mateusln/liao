@@ -160,6 +160,7 @@ public class AnalisadorSintatico {
                     if( !(id_tipo == "tipo_inteiro" && Exp_tipo=="tipo_byte")){
                         System.out.println(id_tipo+" "+Exp_tipo);
                         System.out.println(automato.contaLinha+":ERRO TIPO incompativel");
+                        System.exit(0);
                     }
                 }
             }
@@ -277,7 +278,7 @@ public class AnalisadorSintatico {
             if(logicosOperador=="igualdade"){
                 if (expS_tipo != expS2_tipo){
                     if( !(expS_tipo=="tipo_inteiro" || expS_tipo=="tipo_byte") ){
-                        System.out.println(AnalisadorLexico.contaLinha + ":tipos incompatveis");
+                        System.out.println(AnalisadorLexico.contaLinha + ":tipos incompatveis ");
                         System.exit(0);
                     }else if(!(expS2_tipo=="tipo_inteiro" || expS2_tipo=="tipo_byte") ){
                         System.out.println(AnalisadorLexico.contaLinha + ":tipos incompatveis");
@@ -285,12 +286,18 @@ public class AnalisadorSintatico {
                     }
                 }
             }else if(logicosOperador!="diferenca"){
-                if(expS_tipo=="tipo_string" || expS2_tipo=="tipo_byte" || expS_tipo=="tipo_byte" || expS2_tipo=="tipo_string"){
+                if(expS_tipo=="tipo_string" || expS2_tipo=="tipo_logico" || expS_tipo=="tipo_logico" || expS2_tipo=="tipo_string"){
+                    System.out.println(expS_tipo+expS2_tipo );
+                    
                     System.out.println(AnalisadorLexico.contaLinha + ":tipos incompatveis");
-                        System.exit(0);
+                    System.exit(0);
                 }
+            }else{ //caso logicoOp == igualdade
+                if(expS_tipo=="tipo_string" || expS2_tipo=="tipo_string"){
+                    System.out.println(AnalisadorLexico.contaLinha + ":tipos incompatveis");
+                    System.exit(0);
+                }   
             }
-            //#terminar regra 25 de verificação de tipos
             expS_tipo="tipo_logico"; //se ele chegou ate aqui a exp vai ser logica
         }
         return expS_tipo;

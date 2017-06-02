@@ -2,7 +2,7 @@
 
 integer n=1 + 2;
 string nome='1'+'2';
-boolean naoTerminou= 2 == 1;
+boolean naoTerminou= 1 != 300;
 
 /* Programa Principal */
 main
