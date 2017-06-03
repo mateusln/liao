@@ -124,12 +124,11 @@ public class AnalisadorSintatico {
             CasaToken( ATRIBUICAO );
             
             String exp_Tipo=ProcExp();
-            Simbolo simboloID=AnalisadorLexico.tabela.getSimbolo(lexTemp);
-            if(AnalisadorLexico.tabela.getSimbolo(lexTemp).getClasse()==""){
+            if(AnalisadorLexico.tabela.getSimbolo(lexTemp).getClasse()==""){ //olha se o ID já foi declarado
                 AnalisadorLexico.tabela.getSimbolo(lexTemp).setClasse("const");
                 AnalisadorLexico.tabela.getSimbolo(lexTemp).setTipo(exp_Tipo);
             }else{
-                System.out.println("ERRO já declarado");
+                System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTemp).getLexema()+"]");
                 System.exit(0);
             }
             
@@ -162,26 +161,47 @@ public class AnalisadorSintatico {
             }
             String lexTemp=registro.getLexema();
             CasaToken( IDENTIFICADOR );
-            AnalisadorLexico.tabela.getSimbolo(lexTemp).setClasse("var");
-            AnalisadorLexico.tabela.getSimbolo(lexTemp).setTipo(id_tipo);
+            if(AnalisadorLexico.tabela.getSimbolo(lexTemp).getClasse()==""){
+                AnalisadorLexico.tabela.getSimbolo(lexTemp).setClasse("var");
+                AnalisadorLexico.tabela.getSimbolo(lexTemp).setTipo(id_tipo);
+            }else{
+                System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTemp).getLexema()+"]");
+                System.exit(0);
+            }
+            
             if( registro.getNumToken() == ATRIBUICAO ) {
                 CasaToken( ATRIBUICAO );
                 String Exp_tipo = "";
                 Exp_tipo=ProcExp();
                 if(id_tipo!=Exp_tipo){
                     if( !(id_tipo == "tipo_inteiro" && Exp_tipo=="tipo_byte")){
-                        System.out.println(id_tipo+" "+Exp_tipo);
-                        System.out.println(automato.contaLinha+":ERRO TIPO incompativel");
+                        System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTemp).getLexema()+"]");
                         System.exit(0);
                     }
                 }
             }
             while( registro.getNumToken() == VIRGULA ) {
                 CasaToken( VIRGULA );
+                lexTemp=registro.getLexema();
                 CasaToken( IDENTIFICADOR );
+                
+                if(AnalisadorLexico.tabela.getSimbolo(lexTemp).getClasse()==""){
+                    AnalisadorLexico.tabela.getSimbolo(lexTemp).setClasse("var");
+                    AnalisadorLexico.tabela.getSimbolo(lexTemp).setTipo(id_tipo);
+                }else{
+                    System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTemp).getLexema()+"]");
+                    System.exit(0);
+                }
+                
                 if( registro.getNumToken() == ATRIBUICAO ){
                     CasaToken( ATRIBUICAO );
-                    ProcExp();
+                    String exp_tipo=ProcExp();
+                    if(id_tipo!=exp_tipo){
+                    if( !(id_tipo == "tipo_inteiro" && exp_tipo=="tipo_byte")){
+                        System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
+                        System.exit(0);
+                    }
+                }
                 }
             }
             CasaToken( PONTO_VIRG );
