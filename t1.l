@@ -1,7 +1,7 @@
 /* Exemplo de Programa na linguagem L */
 
-integer n=1 + 2;
-string nome='1'+'2';
+/*integer n=1 + 2;*/
+string nome=-'string';
 boolean naoTerminou= 1 != 300;
 
 /* Programa Principal */

@@ -33,7 +33,7 @@ public class AnalisadorSintatico {
     private final byte F_PARENT = 13; // )
     private final byte MAIOR = 14;
     private final byte MENOR = 15;
-    private final byte DIFER = 16; // !=
+    private final byte DIFERENCA = 16; // !=
     private final byte MAIORIGUAL = 17;
     private final byte MENORIGUAL = 18;
     private final byte VIRGULA = 19;
@@ -212,7 +212,7 @@ public class AnalisadorSintatico {
             
             if(t_op=="adicao" || t_op=="subtracao"){
                 if(t_tipo=="tipo_logico" || t2_tipo=="tipo_logico"){
-                    System.out.println(AnalisadorLexico.contaLinha+":tipos incompatveis");
+                    System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
                     System.exit(0);
                 }
                 
@@ -237,12 +237,13 @@ public class AnalisadorSintatico {
                     System.exit(0);
                 }
                 
-            }else{//caso OR
+                }else{//caso OR
                 if(t_tipo!="tipo_logico" || t2_tipo!="tipo_logico"){
                     System.out.println(AnalisadorLexico.contaLinha + ":tipos incompatveis");
                     System.exit(0);
                 }
                 Exps_tipo="tipo_logico";
+                
             }
                 
         }
@@ -255,12 +256,13 @@ public class AnalisadorSintatico {
         expS_tipo=ProcExpS();
         String logicosOperador="";
         
-        if( registro.getNumToken() == IGUAL || registro.getNumToken() == ATRIBUICAO || registro.getNumToken() == MENOR || registro.getNumToken() == MAIOR || registro.getNumToken() == MENORIGUAL || registro.getNumToken() == MAIORIGUAL ){
+        if( registro.getNumToken() == IGUAL || registro.getNumToken() == DIFERENCA || registro.getNumToken() == MENOR || registro.getNumToken() == MAIOR || registro.getNumToken() == MENORIGUAL || registro.getNumToken() == MAIORIGUAL ){
             if( registro.getNumToken() == IGUAL ){
                 CasaToken( IGUAL );
                 logicosOperador="igualdade";
-            }else if( registro.getNumToken() == ATRIBUICAO ){
-                CasaToken( ATRIBUICAO );
+            }else if( registro.getNumToken() == DIFERENCA ){
+                CasaToken( DIFERENCA );
+                logicosOperador="diferenca";
             }else if( registro.getNumToken() == MENOR ){
                 CasaToken( MENOR );
                 logicosOperador="menor";
@@ -296,7 +298,8 @@ public class AnalisadorSintatico {
                 if(expS_tipo=="tipo_string" || expS2_tipo=="tipo_string"){
                     System.out.println(AnalisadorLexico.contaLinha + ":tipos incompatveis");
                     System.exit(0);
-                }   
+                }
+                
             }
             expS_tipo="tipo_logico"; //se ele chegou ate aqui a exp vai ser logica
         }
@@ -315,9 +318,10 @@ public class AnalisadorSintatico {
             String lexTemp=registro.getLexema();
             CasaToken( IDENTIFICADOR );
             Simbolo simboloTemp=AnalisadorLexico.tabela.getSimbolo(lexTemp);//busca o lex na tabela de simbolos
-            if(simboloTemp.getClasse()==null || simboloTemp.getClasse()=="")
+            if(simboloTemp.getClasse()==null || simboloTemp.getClasse()==""){
                 System.out.println(AnalisadorLexico.contaLinha+":"+simboloTemp.getLexema()+" ERRO, nao declarado");
-            else
+                System.exit(0);
+            }else
                 F_tipo=simboloTemp.getTipo();
         }else if( registro.getNumToken() == VALORCONSTANTE ){
             String temp=registro.getLexema(); //armazena o lex antes de passar pelo CT
@@ -382,6 +386,12 @@ public class AnalisadorSintatico {
 
     public void ProcC() throws IOException {
         if( registro.getNumToken() == IDENTIFICADOR ){
+            String lexTemp=registro.getLexema();
+            Simbolo simboloTemp=AnalisadorLexico.tabela.getSimbolo(lexTemp);
+            if(simboloTemp.getClasse()=="" || simboloTemp.getClasse()==null){
+                System.out.println(AnalisadorLexico.contaLinha+":"+simboloTemp.getLexema()+" ERRO, nao declarado");
+                System.exit(0);
+            }
             CasaToken( IDENTIFICADOR );
             CasaToken( ATRIBUICAO );
             ProcExp();
