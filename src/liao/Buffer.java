@@ -18,7 +18,6 @@ import java.util.List;
 public class Buffer {
     
     public static List<String> buffer;
-	public static List<String> real = new ArrayList<>();
 	public BufferedWriter arquivo;
 	
 	public Buffer() throws Exception{
@@ -27,7 +26,7 @@ public class Buffer {
 	}
         
         public void criarArquivo() throws IOException{
-		for(String s : real){
+		for(String s : buffer){
 			arquivo.write(s);
 			arquivo.newLine();
 		}

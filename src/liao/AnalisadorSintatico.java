@@ -15,6 +15,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AnalisadorSintatico {
     private final byte CONST = 0;
@@ -58,6 +60,8 @@ public class AnalisadorSintatico {
     Simbolo registro;
     AnalisadorLexico automato;
     BufferedReader leitor;
+    Memoria memoria;
+    Buffer buffer;
 
     public AnalisadorSintatico(BufferedReader leitor) throws IOException {
         automato = new AnalisadorLexico();
@@ -65,16 +69,26 @@ public class AnalisadorSintatico {
         
         registro = automato.analisar(leitor);
         
+        memoria = new Memoria();
+        try {
+            //fazer rotulo
+            buffer = new Buffer();
+        } catch (Exception ex) {
+            Logger.getLogger(AnalisadorSintatico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
         if( registro.getLexema() != "" ) {
             ProcS();
-            //if( (byte)65535 )
-            //System.exit(0); //#teste
-            //System.out.println(registro.getLexema());
             if( registro.getLexema() != "EOF" ) {  
                 System.out.println(automato.contaLinha+":token nao esperado [ "+registro.getLexema()+" ] ");
                 System.exit(0);
-            }else
+            }else{
+                buffer.criarArquivo();
                 System.exit(0);
+                
+            }
         } else {
             System.out.println( /*Número da linha com erro + mensagem de erro */ );
             System.exit(0);
@@ -100,6 +114,14 @@ public class AnalisadorSintatico {
     }
 
     public void ProcS() throws IOException {
+        
+        Buffer.buffer.add("sseg SEGMENT STACK ;início seg. pilha");
+	Buffer.buffer.add("byte 4000h DUP(?) ;dimensiona pilha");
+	Buffer.buffer.add("sseg ENDS ;fim seg. pilha");
+	Buffer.buffer.add("dseg SEGMENT PUBLIC ;início seg. dados");
+	Buffer.buffer.add("byte 4000h DUP(?) ;temporários");
+        
+        
         do
             ProcD();
         while( registro.getNumToken() == CONST ||  registro.getNumToken() == INTEGER || registro.getNumToken() == BOOLEAN || registro.getNumToken() == BYTE || registro.getNumToken() == STRING );

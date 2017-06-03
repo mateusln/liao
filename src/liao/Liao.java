@@ -37,9 +37,8 @@ public class Liao {
             leitor = new BufferedReader(new FileReader(fonte));
         else
             leitor = new BufferedReader(new FileReader(fonte+=".l"));
-        
         AnalisadorSintatico analisadorSintatico = new AnalisadorSintatico(leitor);
-
+        
         //#teste
         //AnalisadorLexico analisadorLexico = new AnalisadorLexico();
         
