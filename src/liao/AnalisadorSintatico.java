@@ -373,7 +373,7 @@ public class AnalisadorSintatico {
             String f2_tipo=ProcF();
             if(t_op=="multi" || t_op=="div"){
                 if(f1_tipo=="tipo_logico" || f1_tipo=="tipo_string" || f2_tipo=="tipo_logico" || f2_tipo=="tipo_string"){
-                    System.out.println(AnalisadorLexico.numLinha+":tipos incompativeis");
+                    System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
                     System.exit(0);
                 }
                 
@@ -383,7 +383,7 @@ public class AnalisadorSintatico {
                     T_tipo="tipo_inteiro";
             }else if(t_op=="and"){
                 if(f1_tipo!="tipo_logico" || f2_tipo!="tipo_logico"){
-                    System.out.println(AnalisadorLexico.numLinha+":tipos incompativeis");
+                    System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
                     System.exit(0);
                 }
                 T_tipo="tipo_logico";
@@ -396,32 +396,36 @@ public class AnalisadorSintatico {
     public void ProcC() throws IOException {
         if( registro.getNumToken() == IDENTIFICADOR ){
             String lexTemp=registro.getLexema();
-            Simbolo simboloTemp=AnalisadorLexico.tabela.getSimbolo(lexTemp); //pega o identificador na tabela
-            if(simboloTemp.getClasse()=="" || simboloTemp.getClasse()==null){ 
-                System.out.println(AnalisadorLexico.contaLinha+":identificador nao declarado ["+simboloTemp.getLexema()+"]");
+            Simbolo simboloID=AnalisadorLexico.tabela.getSimbolo(lexTemp); //pega o identificador na tabela
+            if(simboloID.getClasse()=="" || simboloID.getClasse()==null){ 
+                System.out.println(AnalisadorLexico.contaLinha+":identificador nao declarado ["+simboloID.getLexema()+"]");
                 System.exit(0);
             }
-            if(simboloTemp.getClasse()=="const"){
-                System.out.println(AnalisadorLexico.contaLinha+":classe de identificador incompatível ["+simboloTemp.getLexema()+"]");
+            if(simboloID.getClasse()=="const"){
+                System.out.println(AnalisadorLexico.contaLinha+":classe de identificador incompatível ["+simboloID.getLexema()+"]");
                 System.exit(0);
             }
             
             CasaToken( IDENTIFICADOR );
             CasaToken( ATRIBUICAO );
             String exp_tipo=ProcExp();
-            CasaToken( PONTO_VIRG );
-            if(simboloTemp.getTipo()!=exp_tipo){
-                System.out.println("entrei");
-                if( !( simboloTemp.getTipo()=="tipo_inteiro" && exp_tipo=="tipo_byte") ){
-                    System.out.println(simboloTemp.getTipo()+exp_tipo);
-                    System.out.println(AnalisadorLexico.numLinha+":tipos incompativeis");
+            
+            if(simboloID.getTipo()!=exp_tipo){
+                if( !( simboloID.getTipo()=="tipo_inteiro" && exp_tipo=="tipo_byte") ){
+                    System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
                     System.exit(0);
                 }
             }
+            CasaToken( PONTO_VIRG );
+            
         } else if( registro.getNumToken() == WHILE ){
             CasaToken( WHILE );
             CasaToken( A_PARENT );
-            ProcExp();
+            String exp_Tipo=ProcExp();
+            if(exp_Tipo!="tipo_logico"){
+                System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
+                System.exit(0);
+            }
             CasaToken( F_PARENT );
             if( registro.getNumToken() == BEGIN ) {
                 CasaToken( BEGIN );
@@ -434,7 +438,11 @@ public class AnalisadorSintatico {
         } else if( registro.getNumToken() == IF ){
             CasaToken( IF );
             CasaToken( A_PARENT );
-            ProcExp();
+            String exp_Tipo=ProcExp();
+            if(exp_Tipo!="tipo_logico"){
+                System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
+                System.exit(0);
+            }
             CasaToken( F_PARENT );
             CasaToken( THEN );
             if( registro.getNumToken() == BEGIN ){
@@ -463,17 +471,32 @@ public class AnalisadorSintatico {
             else
                 CasaToken( WRITELN );
             CasaToken( A_PARENT );
-            ProcExp();
+            String exp_Tipo=ProcExp();
+            if(exp_Tipo=="tipo_logico"){
+                System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
+                System.exit(0);
+            }
             while( registro.getNumToken() == VIRGULA ) {
                 CasaToken( VIRGULA );
-                ProcExp();
+                exp_Tipo=ProcExp();
+                if(exp_Tipo=="tipo_logico"){
+                    System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
+                    System.exit(0);
+                }
             }
             CasaToken( F_PARENT );
             CasaToken( PONTO_VIRG );
         } else if( registro.getNumToken() == READLN ) {
             CasaToken( READLN );
             CasaToken( A_PARENT );
+            String lexTemp=registro.getLexema();
             CasaToken( IDENTIFICADOR );
+            Simbolo simboloID=AnalisadorLexico.tabela.getSimbolo(lexTemp);
+            if(simboloID.getTipo()=="tipo_logico"){
+                System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
+                System.exit(0);
+            }
+            
             CasaToken( F_PARENT );
             CasaToken( PONTO_VIRG );
         } else //Comando nulo 
