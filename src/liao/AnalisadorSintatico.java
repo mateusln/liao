@@ -119,9 +119,21 @@ public class AnalisadorSintatico {
         
         if( registro.getNumToken() == CONST ) {
             CasaToken( CONST );
+            String lexTemp=registro.getLexema();
             CasaToken( IDENTIFICADOR );
             CasaToken( ATRIBUICAO );
-            if( registro.getNumToken() == SOMA )
+            
+            String exp_Tipo=ProcExp();
+            Simbolo simboloID=AnalisadorLexico.tabela.getSimbolo(lexTemp);
+            if(AnalisadorLexico.tabela.getSimbolo(lexTemp).getClasse()==""){
+                AnalisadorLexico.tabela.getSimbolo(lexTemp).setClasse("const");
+                AnalisadorLexico.tabela.getSimbolo(lexTemp).setTipo(exp_Tipo);
+            }else{
+                System.out.println("ERRO já declarado");
+                System.exit(0);
+            }
+            
+            /*if( registro.getNumToken() == SOMA )
                 CasaToken( SOMA );
             else if( registro.getNumToken() == SUBTRACAO )
                 CasaToken( SUBTRACAO );
@@ -131,7 +143,7 @@ public class AnalisadorSintatico {
             else if(registro.getNumToken()== TRUE)
                 CasaToken(TRUE);
             else
-                CasaToken(FALSE);
+                CasaToken(FALSE);*/
                                 
             CasaToken( PONTO_VIRG );
         } else {

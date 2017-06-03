@@ -102,6 +102,7 @@ public class Tab_Simbolos {
     // Metodo de Insercao
     public Simbolo inserir (String lexema) {
         Simbolo simbolo = new Simbolo(IDENTIFICADOR, lexema);
+        simbolo.setClasse("");
         token.put(lexema, simbolo);
         return token.get(lexema);
     }
