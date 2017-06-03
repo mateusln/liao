@@ -32,6 +32,7 @@ public class Liao {
         
         BufferedReader leitor;
         
+        
 	if(fonte.endsWith(".l"))
             leitor = new BufferedReader(new FileReader(fonte));
         else

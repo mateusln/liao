@@ -220,7 +220,7 @@ public class AnalisadorLexico {
                     if ( isHexadecimal(c) ) {
                         lexema+=c;
                         estadoAtual = estadoFinal;
-                        tabela.inserirConstante(lexema, "tipo_inteiro");
+                        tabela.inserirConstante(lexema, "tipo_byte");
                     } else{
                         System.out.println(contaLinha+":lexema não identificado [ " +lexema+" ]");
                         System.exit(0);
