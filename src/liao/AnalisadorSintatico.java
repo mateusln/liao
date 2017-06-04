@@ -112,6 +112,40 @@ public class AnalisadorSintatico {
             registro=AnalisadorLexico.analisar(leitor);
         }
     }
+    
+    //#Geraçao de codigo
+    
+    void escreveBuffer(String frase){
+        Buffer.buffer.add(frase);
+    }
+    
+    public void alocarID(String tipo, String id){
+        int endereco;
+        switch(tipo){
+            case "tipo_byte":
+                
+                endereco=memoria.alocarByte();
+                escreveBuffer("byte ?   ; "+id+" ? byte mem="+endereco);
+                AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
+                break;
+            case "tipo_inteiro":
+                escreveBuffer("sword ?  ; "+id+" ? inteiro");
+                endereco=memoria.alocarInteiro();
+                AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
+                break;
+            case "tipo_logico":
+                escreveBuffer("byte ?   ;" +id+" ? logico");
+                endereco=memoria.alocarLogico();
+                AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
+                break;
+            case "tipo_string":
+                escreveBuffer("byte  256 DUP (?)    ;"+id+"? String");
+                endereco=memoria.alocarString();
+                AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
+                break;
+            
+        }
+    }
 
     public void ProcS() throws IOException {
         
@@ -149,6 +183,8 @@ public class AnalisadorSintatico {
             if(AnalisadorLexico.tabela.getSimbolo(lexTemp).getClasse()==""){ //olha se o ID já foi declarado
                 AnalisadorLexico.tabela.getSimbolo(lexTemp).setClasse("const");
                 AnalisadorLexico.tabela.getSimbolo(lexTemp).setTipo(exp_Tipo);
+                Buffer.buffer.add(";"+lexTemp);
+                //fazer alocação para cada tipo
             }else{
                 System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTemp).getLexema()+"]");
                 System.exit(0);
@@ -181,13 +217,13 @@ public class AnalisadorSintatico {
                 CasaToken( STRING );
                 id_tipo="tipo_string";
             }
-            String lexTemp=registro.getLexema();
+            String lexTempID=registro.getLexema();
             CasaToken( IDENTIFICADOR );
-            if(AnalisadorLexico.tabela.getSimbolo(lexTemp).getClasse()==""){
-                AnalisadorLexico.tabela.getSimbolo(lexTemp).setClasse("var");
-                AnalisadorLexico.tabela.getSimbolo(lexTemp).setTipo(id_tipo);
+            if(AnalisadorLexico.tabela.getSimbolo(lexTempID).getClasse()==""){
+                AnalisadorLexico.tabela.getSimbolo(lexTempID).setClasse("var");
+                AnalisadorLexico.tabela.getSimbolo(lexTempID).setTipo(id_tipo);
             }else{
-                System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTemp).getLexema()+"]");
+                System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTempID).getLexema()+"]");
                 System.exit(0);
             }
             
@@ -197,21 +233,22 @@ public class AnalisadorSintatico {
                 Exp_tipo=ProcExp();
                 if(id_tipo!=Exp_tipo){
                     if( !(id_tipo == "tipo_inteiro" && Exp_tipo=="tipo_byte")){
-                        System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTemp).getLexema()+"]");
+                        System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTempID).getLexema()+"]");
                         System.exit(0);
                     }
                 }
-            }
+            }else
+                alocarID(AnalisadorLexico.tabela.getSimbolo(lexTempID).getTipo(), lexTempID);
             while( registro.getNumToken() == VIRGULA ) {
                 CasaToken( VIRGULA );
-                lexTemp=registro.getLexema();
+                lexTempID=registro.getLexema();
                 CasaToken( IDENTIFICADOR );
                 
-                if(AnalisadorLexico.tabela.getSimbolo(lexTemp).getClasse()==""){
-                    AnalisadorLexico.tabela.getSimbolo(lexTemp).setClasse("var");
-                    AnalisadorLexico.tabela.getSimbolo(lexTemp).setTipo(id_tipo);
+                if(AnalisadorLexico.tabela.getSimbolo(lexTempID).getClasse()==""){
+                    AnalisadorLexico.tabela.getSimbolo(lexTempID).setClasse("var");
+                    AnalisadorLexico.tabela.getSimbolo(lexTempID).setTipo(id_tipo);
                 }else{
-                    System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTemp).getLexema()+"]");
+                    System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTempID).getLexema()+"]");
                     System.exit(0);
                 }
                 

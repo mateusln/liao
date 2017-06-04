@@ -1,6 +1,8 @@
 /* Exemplo de Programa na linguagem L */
 
-integer n=1 + 2;
+integer m;
+integer n;
+byte y;
 string nome=-'string';
 boolean naoTerminou= 1 != 300;
 integer x=0;
