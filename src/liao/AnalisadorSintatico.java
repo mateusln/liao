@@ -62,6 +62,9 @@ public class AnalisadorSintatico {
     BufferedReader leitor;
     Memoria memoria;
     Buffer buffer;
+    
+    int f_end;
+    
 
     public AnalisadorSintatico(BufferedReader leitor) throws IOException {
         automato = new AnalisadorLexico();
@@ -120,6 +123,34 @@ public class AnalisadorSintatico {
     }
     
     public void alocarID(String tipo, String id){
+        int endereco;
+        switch(tipo){
+            case "tipo_byte":
+                
+                endereco=memoria.alocarByte();
+                escreveBuffer("byte ?   ; "+id+" ? byte mem="+endereco);
+                AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
+                break;
+            case "tipo_inteiro":
+                escreveBuffer("sword ?  ; "+id+" ? inteiro");
+                endereco=memoria.alocarInteiro();
+                AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
+                break;
+            case "tipo_logico":
+                escreveBuffer("byte ?   ;" +id+" ? logico");
+                endereco=memoria.alocarLogico();
+                AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
+                break;
+            case "tipo_string":
+                escreveBuffer("byte  256 DUP (?)    ;"+id+"? String");
+                endereco=memoria.alocarString();
+                AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
+                break;
+            
+        }
+    }
+    
+    public void alocarIDcomAtribuicao(String tipo, String id){
         int endereco;
         switch(tipo){
             case "tipo_byte":

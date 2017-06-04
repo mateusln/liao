@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class Tab_Simbolos {
     public static HashMap <String, Simbolo> token = new HashMap <>();
-    public static int endereco=0;
+    public static int endereco_tab=0;
     
     private final byte CONST = 0;
     private final byte INTEGER = 1;
@@ -102,14 +102,15 @@ public class Tab_Simbolos {
     
     // Metodo de Insercao
     public Simbolo inserir (String lexema) {
-        Simbolo simbolo = new Simbolo(IDENTIFICADOR, lexema, endereco++);
+        Simbolo simbolo = new Simbolo(IDENTIFICADOR, lexema, endereco_tab++);
         simbolo.setClasse("");
         token.put(lexema, simbolo);
         return token.get(lexema);
     }
     
     public Simbolo inserirConstante(String lexema, String tipo){
-        Simbolo simbolo = new Simbolo(VALORCONSTANTE, lexema, 0, tipo);
+        Simbolo simbolo = new Simbolo(VALORCONSTANTE, lexema, endereco_tab++, tipo);
+        System.out.println("end"+endereco_tab);
         token.put(lexema, simbolo);
         return token.get(lexema);
     }
