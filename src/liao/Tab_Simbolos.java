@@ -110,7 +110,6 @@ public class Tab_Simbolos {
     
     public Simbolo inserirConstante(String lexema, String tipo){
         Simbolo simbolo = new Simbolo(VALORCONSTANTE, lexema, endereco_tab++, tipo);
-        System.out.println("end"+endereco_tab);
         token.put(lexema, simbolo);
         return token.get(lexema);
     }

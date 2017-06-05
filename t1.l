@@ -2,7 +2,7 @@
 
 integer m;
 integer n;
-byte y;
+byte y=23;
 string nome=-'string';
 boolean naoTerminou= 1 != 300;
 integer x=0;

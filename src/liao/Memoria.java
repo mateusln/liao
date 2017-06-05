@@ -86,4 +86,27 @@ public class Memoria {
 		contTemp += 256;
 		return tmp;
 	}
+        
+        public int alocarTemp(String tipo){
+            int tmp=contTemp;
+            switch(tipo){
+                case "tipo_byte":
+                        tmp=alocarTempByte();
+                        break;
+                case "tipo_inteiro":
+                        tmp=alocarTempInteiro();
+                        break;
+                case "tipo_logico":
+                        tmp=alocarTempByte();
+                        break;
+                case "tipo_string":
+                        tmp=alocarTempString();
+                        break;
+                default:
+                    System.out.println("Erro ao alocar memoria temp");
+                    break;
+                        
+            }
+            return tmp;
+        }
 }

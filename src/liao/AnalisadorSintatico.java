@@ -185,17 +185,30 @@ public class AnalisadorSintatico {
 	Buffer.buffer.add("sseg ENDS ;fim seg. pilha");
 	Buffer.buffer.add("dseg SEGMENT PUBLIC ;início seg. dados");
 	Buffer.buffer.add("byte 4000h DUP(?) ;temporários");
+        memoria.alocarTemp();
         
         
         do
             ProcD();
         while( registro.getNumToken() == CONST ||  registro.getNumToken() == INTEGER || registro.getNumToken() == BOOLEAN || registro.getNumToken() == BYTE || registro.getNumToken() == STRING );
         
+        Buffer.buffer.add("dseg ENDS ;fim seg. dados");
+	Buffer.buffer.add("cseg SEGMENT PUBLIC ;início seg. código");
+	Buffer.buffer.add("ASSUME CS:cseg, DS:dseg");
+	Buffer.buffer.add("strt:");
+	Buffer.buffer.add("mov ax, dseg");
+	Buffer.buffer.add("mov ds, ax");
+        
         CasaToken( MAIN );
         
         do
             ProcC();
         while( registro.getNumToken() == IDENTIFICADOR || registro.getNumToken() == WHILE || registro.getNumToken() == IF || registro.getNumToken() == WRITE || registro.getNumToken() == WRITELN || registro.getNumToken() == READLN );
+        
+        escreveBuffer("mov ah, 4Ch");
+	escreveBuffer("int 21h");
+	escreveBuffer("cseg ENDS ;fim seg. código");
+	escreveBuffer("END strt ;fim programa");
         
         CasaToken( END );
     }// fim ProcS
@@ -268,6 +281,10 @@ public class AnalisadorSintatico {
                         System.exit(0);
                     }
                 }
+                alocarID(AnalisadorLexico.tabela.getSimbolo(lexTempID).getTipo(), lexTempID);
+                escreveBuffer("mov al, DS:[" + f_end + "]");
+                escreveBuffer("mov DS:[" + AnalisadorLexico.tabela.getSimbolo(lexTempID).getEndereco() + "], ax");
+                
             }else
                 alocarID(AnalisadorLexico.tabela.getSimbolo(lexTempID).getTipo(), lexTempID);
             while( registro.getNumToken() == VIRGULA ) {
@@ -451,12 +468,20 @@ public class AnalisadorSintatico {
             }else
                 F_tipo=simboloTemp.getTipo();
         }else if( registro.getNumToken() == VALORCONSTANTE ){
-            String temp=registro.getLexema(); //armazena o lex antes de passar pelo CT
+            String LexemaConst=registro.getLexema(); //armazena o lex antes de passar pelo CT
             CasaToken( VALORCONSTANTE );
+             // pega o enderco da constante e passa para t
             //regra 02
             //pega o tipo da tabela porque o programa so terá ele depois de passar pelo CT e inserir na tabela
-            F_tipo=AnalisadorLexico.tabela.getSimbolo(temp).getTipo();
-        
+            F_tipo=AnalisadorLexico.tabela.getSimbolo(LexemaConst).getTipo();
+            
+            if(F_tipo!="tipo_string"){
+                f_end = memoria.alocarTemp(F_tipo);
+                escreveBuffer("mov ax, " + LexemaConst + " ; const " + LexemaConst);
+
+                escreveBuffer("mov DS:[" + f_end + "], al");
+            }
+            
         }else if(registro.getNumToken() == TRUE){
             CasaToken(TRUE);
             F_tipo="tipo_logico";
