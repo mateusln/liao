@@ -64,6 +64,11 @@ public class AnalisadorSintatico {
     Buffer buffer;
     
     int f_end;
+    int t_end;
+    int expS_end;
+    int exp_end;
+    
+    Rotulo rotulo;
     
 
     public AnalisadorSintatico(BufferedReader leitor) throws IOException {
@@ -73,6 +78,8 @@ public class AnalisadorSintatico {
         registro = automato.analisar(leitor);
         
         memoria = new Memoria();
+        rotulo=new Rotulo();
+        
         try {
             //fazer rotulo
             buffer = new Buffer();
@@ -282,7 +289,7 @@ public class AnalisadorSintatico {
                     }
                 }
                 alocarID(AnalisadorLexico.tabela.getSimbolo(lexTempID).getTipo(), lexTempID);
-                escreveBuffer("mov al, DS:[" + f_end + "]");
+                escreveBuffer("mov al, DS:[" + exp_end + "]");
                 escreveBuffer("mov DS:[" + AnalisadorLexico.tabela.getSimbolo(lexTempID).getEndereco() + "], ax");
                 
             }else
@@ -317,23 +324,44 @@ public class AnalisadorSintatico {
 
     public String ProcExpS() throws IOException {
         String Exps_tipo="";
-        boolean flagNegativo=false;
+        boolean flagNegativo=false, flagPositivo=false;
         String t_op="";
         
-        if( registro.getNumToken() == SOMA )
+        if( registro.getNumToken() == SOMA ){
             CasaToken( SOMA );
-        else if( registro.getNumToken() == SUBTRACAO ){
+            flagPositivo=true;
+        }else if( registro.getNumToken() == SUBTRACAO ){
             CasaToken( SUBTRACAO );
             flagNegativo=true;
         }
         
         String t_tipo=ProcT();
         
+        expS_end=t_end;
+        
+        /*
         if(flagNegativo && t_tipo=="tipo_byte"){
             t_tipo="tipo_inteiro";
             Exps_tipo=t_tipo;
         }else{
             Exps_tipo=t_tipo;
+        }*/
+  
+        if(flagNegativo) {
+            if (t_tipo=="tipo_string"|| t_tipo=="tipo_logico"){
+                System.out.println(AnalisadorLexico.contaLinha + ":tipos incompativeis");
+                System.exit(0);
+            } else if (t_tipo=="tipo_byte") {
+                t_tipo="tipo_inteiro";
+                Exps_tipo=t_tipo;
+            }
+        } else if (flagPositivo) {
+            if (t_tipo=="tipo_string"|| t_tipo=="tipo_logico"){
+                System.out.println(AnalisadorLexico.contaLinha + ":tipos incompativeis");
+                System.exit(0);
+            }
+        } else {
+         Exps_tipo=t_tipo;
         }
         
         while (registro.getNumToken() == SOMA || registro.getNumToken() == SUBTRACAO || registro.getNumToken() == OR ) {
@@ -398,7 +426,9 @@ public class AnalisadorSintatico {
     public String ProcExp() throws IOException {
         String expS_tipo;
         expS_tipo=ProcExpS();
+        exp_end=expS_end;
         String logicosOperador="";
+        
         
         if( registro.getNumToken() == IGUAL || registro.getNumToken() == DIFERENCA || registro.getNumToken() == MENOR || registro.getNumToken() == MAIOR || registro.getNumToken() == MENORIGUAL || registro.getNumToken() == MAIORIGUAL ){
             if( registro.getNumToken() == IGUAL ){
@@ -433,8 +463,6 @@ public class AnalisadorSintatico {
                 }
             }else if(logicosOperador!="diferenca"){ // caso seja <, >, <=, >=
                 if(expS_tipo=="tipo_string" || expS2_tipo=="tipo_logico" || expS_tipo=="tipo_logico" || expS2_tipo=="tipo_string"){
-                    System.out.println(expS_tipo+expS2_tipo );
-                    
                     System.out.println(AnalisadorLexico.contaLinha + ":tipos incompativeis");
                     System.exit(0);
                 }
@@ -462,6 +490,7 @@ public class AnalisadorSintatico {
             String lexTemp=registro.getLexema();
             CasaToken( IDENTIFICADOR );
             Simbolo simboloTemp=AnalisadorLexico.tabela.getSimbolo(lexTemp);//busca o lex na tabela de simbolos
+            f_end=simboloTemp.getEndereco();
             if(simboloTemp.getClasse()==null || simboloTemp.getClasse()==""){
                 System.out.println(AnalisadorLexico.contaLinha+":identificador nao declarado ["+simboloTemp.getLexema()+"]");
                 System.exit(0);
@@ -504,6 +533,8 @@ public class AnalisadorSintatico {
         String T_tipo="";
         
         T_tipo=ProcF();
+        t_end=f_end;
+        
         while( registro.getNumToken() == ASTERISCO || registro.getNumToken() == BARRA_DIV || registro.getNumToken() == AND ) {
             String t_op="";
             if( registro.getNumToken() == ASTERISCO ){
@@ -623,6 +654,83 @@ public class AnalisadorSintatico {
                 System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
                 System.exit(0);
             }
+            
+            int stringEnd = memoria.novoTemp();
+            
+            if(exp_Tipo.equals("tipo_string")){
+				escreveBuffer("mov dx, " + exp_end);
+				
+				escreveBuffer("mov ah, 09h");
+				
+				escreveBuffer("int 21h");
+				
+				
+			}else{
+				escreveBuffer("mov ax, DS:[" + exp_end + "]");
+				escreveBuffer("mov di, " + stringEnd + " ;end. string temp.");
+				
+				escreveBuffer("mov cx, 0 ;contador");
+				
+				escreveBuffer("cmp ax,0 ;verifica sinal");
+				
+				String rot = rotulo.novoRotulo();
+				escreveBuffer("jge " + rot + " ;salta se numero positivo");
+				
+				escreveBuffer("mov bl, 2Dh ;senao, escreve sinal ");
+				
+				escreveBuffer("mov ds:[di], bl");
+				
+				escreveBuffer("add di, 1 ;incrementa indice");
+				
+				escreveBuffer("neg ax ;toma modulo do numero");
+				
+				escreveBuffer(rot + ":");
+				
+				escreveBuffer("mov bx, 10 ;divisor");
+				
+				String rot1 = rotulo.novoRotulo();
+				escreveBuffer(rot1 + ":");
+				
+				escreveBuffer("add cx, 1 ;incrementa contador");
+				
+				escreveBuffer("mov dx, 0 ;estende 32bits p/ div.");
+				
+				escreveBuffer("idiv bx ;divide DXAX por BX");
+				
+				escreveBuffer("push dx ;empilha valor do resto");
+				
+				escreveBuffer("cmp ax, 0 ;verifica se quoc.  0");
+				
+				escreveBuffer("jne " + rot1 + " ;se nao  0, continua");
+								
+				String rot2 = rotulo.novoRotulo();
+				escreveBuffer(rot2 + ":");
+				
+				escreveBuffer("pop dx ;desempilha valor");
+				
+				escreveBuffer("add dx, 30h ;transforma em caractere");
+				
+				escreveBuffer("mov ds:[di],dl ;escreve caractere");
+				
+				escreveBuffer("add di, 1 ;incrementa base");
+				
+				escreveBuffer("add cx, -1 ;decrementa contador");
+				
+				escreveBuffer("cmp cx, 0 ;verifica pilha vazia");
+				
+				escreveBuffer("jne " + rot2 + " ;se nao pilha vazia, loop");
+				
+				escreveBuffer("mov dl, 024h ;fim de string");
+				escreveBuffer("mov ds:[di], dl ;grava '$'");
+				
+				escreveBuffer("mov dx, " + stringEnd);
+				
+				escreveBuffer("mov ah, 09h");
+				
+				escreveBuffer("int 21h");
+			}
+            
+            
             while( registro.getNumToken() == VIRGULA ) {
                 CasaToken( VIRGULA );
                 exp_Tipo=ProcExp();
