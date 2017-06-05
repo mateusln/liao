@@ -3,17 +3,18 @@ byte 4000h DUP(?) ;dimensiona pilha
 sseg ENDS ;fim seg. pilha
 dseg SEGMENT PUBLIC ;início seg. dados
 byte 4000h DUP(?) ;temporários
-mov ax, 23 ; const 23
-mov DS:[0], al
-byte ?   ; y ? byte mem=16384
-mov al, DS:[0]
-mov DS:[16384], ax
+sword ?  ; y ? inteiro
 dseg ENDS ;fim seg. dados
 cseg SEGMENT PUBLIC ;início seg. código
 ASSUME CS:cseg, DS:dseg
 strt:
 mov ax, dseg
 mov ds, ax
+mov ax, 23 ; const 23
+mov DS:[0], al
+mov al, DS:[0]
+mov ah, 0
+mov DS:[16384], ax
 mov ax, DS:[16384]
 mov di, 1 ;end. string temp.
 mov cx, 0 ;contador

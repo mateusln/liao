@@ -1,8 +1,9 @@
 /* Exemplo de Programa na linguagem L */
 
-byte y=23;
+integer y;
 /* Programa Principal */
 main
+y=-24;
   write(y);
   
 end

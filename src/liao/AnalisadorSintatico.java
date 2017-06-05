@@ -524,6 +524,11 @@ public class AnalisadorSintatico {
                 F_tipo=f1_tipo;
             else
                 System.out.println(automato.contaLinha+":ERRO, tipos imcompativeis ");
+            
+            //f_end = procF
+            escreveBuffer("mov al, DS:[" + f_end + "] ;");
+	    escreveBuffer("not al");
+            escreveBuffer("mov DS:[" + f_end + "], al");
         }
         
         return F_tipo;
@@ -573,6 +578,7 @@ public class AnalisadorSintatico {
 
     public void ProcC() throws IOException {
         if( registro.getNumToken() == IDENTIFICADOR ){
+            
             String lexTemp=registro.getLexema();
             Simbolo simboloID=AnalisadorLexico.tabela.getSimbolo(lexTemp); //pega o identificador na tabela
             if(simboloID.getClasse()=="" || simboloID.getClasse()==null){ 
@@ -584,9 +590,18 @@ public class AnalisadorSintatico {
                 System.exit(0);
             }
             
+            
             CasaToken( IDENTIFICADOR );
             CasaToken( ATRIBUICAO );
             String exp_tipo=ProcExp();
+            //pegar exp_end
+            escreveBuffer("mov al, DS:[" + exp_end + "]");
+            
+            if(exp_tipo.equals("tipo_byte")){
+				escreveBuffer("mov ah, 0");
+            }
+            
+            escreveBuffer("mov DS:[" + simboloID.getEndereco() + "], ax");
             
             if(simboloID.getTipo()!=exp_tipo){
                 if( !( simboloID.getTipo()=="tipo_inteiro" && exp_tipo=="tipo_byte") ){
