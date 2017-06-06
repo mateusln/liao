@@ -1,9 +1,13 @@
 /* Exemplo de Programa na linguagem L */
 
-integer y;
+boolean y;
+integer x;
 /* Programa Principal */
 main
-y=-24;
-  write(y);
+y=true;
+x=1;
+	if(y)then begin
+  		write(x);
+  	end
   
 end

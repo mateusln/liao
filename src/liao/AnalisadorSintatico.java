@@ -484,9 +484,9 @@ public class AnalisadorSintatico {
         if( registro.getNumToken() == A_PARENT ) {
             CasaToken( A_PARENT );
             F_tipo=ProcExp();
+            f_end=exp_end;
             CasaToken( F_PARENT );
-        }
-        else if( registro.getNumToken() == IDENTIFICADOR ){
+        }else if( registro.getNumToken() == IDENTIFICADOR ){
             String lexTemp=registro.getLexema();
             CasaToken( IDENTIFICADOR );
             Simbolo simboloTemp=AnalisadorLexico.tabela.getSimbolo(lexTemp);//busca o lex na tabela de simbolos
@@ -507,16 +507,21 @@ public class AnalisadorSintatico {
             if(F_tipo!="tipo_string"){
                 f_end = memoria.alocarTemp(F_tipo);
                 escreveBuffer("mov ax, " + LexemaConst + " ; const " + LexemaConst);
-
                 escreveBuffer("mov DS:[" + f_end + "], al");
             }
             
         }else if(registro.getNumToken() == TRUE){
             CasaToken(TRUE);
             F_tipo="tipo_logico";
+            f_end = memoria.alocarTemp(F_tipo);
+            escreveBuffer("mov ax, Offh ; const true");
+            escreveBuffer("mov DS:[" + f_end + "], al");
         }else if(registro.getNumToken() == FALSE){
             CasaToken(FALSE);
             F_tipo="tipo_logico";
+            f_end = memoria.alocarTemp(F_tipo);
+            escreveBuffer("mov ax, Oh ; const false");
+            escreveBuffer("mov DS:[" + f_end + "], al");
         }else{
             CasaToken( NOT );
             String f1_tipo=ProcF();
@@ -631,11 +636,23 @@ public class AnalisadorSintatico {
         } else if( registro.getNumToken() == IF ){
             CasaToken( IF );
             CasaToken( A_PARENT );
+            
+            String RotuloFalso = rotulo.novoRotulo();
+            String RotuloFim = rotulo.novoRotulo();
+            
             String exp_Tipo=ProcExp();
             if(exp_Tipo!="tipo_logico"){
                 System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
                 System.exit(0);
             }
+            
+            escreveBuffer("mov ax, DS:[" + exp_end + "]");
+			
+            escreveBuffer("cmp ax, 0");
+			
+            escreveBuffer("je " + RotuloFalso+"; rotulo falso");
+			
+            
             CasaToken( F_PARENT );
             CasaToken( THEN );
             if( registro.getNumToken() == BEGIN ){
@@ -648,6 +665,9 @@ public class AnalisadorSintatico {
                 ProcC();
             if( registro.getNumToken() == ELSE ) {
                 CasaToken( ELSE );
+                escreveBuffer("jmp " + RotuloFim);
+				
+		escreveBuffer(RotuloFalso + ":");
                 if( registro.getNumToken() == BEGIN ){
                     CasaToken(BEGIN);
                     do {
@@ -657,7 +677,12 @@ public class AnalisadorSintatico {
                     CasaToken( END );
                 } else
                     ProcC();
-            }
+                
+                escreveBuffer(RotuloFim + ":");
+            }else
+                		escreveBuffer(RotuloFalso + ":");
+
+            
         } else if( registro.getNumToken() == WRITE || registro.getNumToken() == WRITELN ) {
             if( registro.getNumToken() == WRITE )
                 CasaToken( WRITE );
