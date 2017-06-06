@@ -11,17 +11,17 @@ ASSUME CS:cseg, DS:dseg
 strt:
 mov ax, dseg
 mov ds, ax
-mov ax, Offh ; const true
+mov ax, 0h ; const false
 mov DS:[0], al
 mov al, DS:[0]
 mov DS:[16384], ax
-mov ax, 1 ; const 1
+mov ax, 13 ; const 13
 mov DS:[1], al
 mov al, DS:[1]
 mov ah, 0
 mov DS:[16385], ax
 mov ax, DS:[16384]
-cmp ax, 0
+cmp al, 0
 je R0; rotulo falso
 mov ax, DS:[16385]
 mov di, 2 ;end. string temp.

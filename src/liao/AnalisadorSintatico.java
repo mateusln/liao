@@ -514,13 +514,13 @@ public class AnalisadorSintatico {
             CasaToken(TRUE);
             F_tipo="tipo_logico";
             f_end = memoria.alocarTemp(F_tipo);
-            escreveBuffer("mov ax, Offh ; const true");
+            escreveBuffer("mov ax, 0ffh ; const true");
             escreveBuffer("mov DS:[" + f_end + "], al");
         }else if(registro.getNumToken() == FALSE){
             CasaToken(FALSE);
             F_tipo="tipo_logico";
             f_end = memoria.alocarTemp(F_tipo);
-            escreveBuffer("mov ax, Oh ; const false");
+            escreveBuffer("mov ax, 0h ; const false");
             escreveBuffer("mov DS:[" + f_end + "], al");
         }else{
             CasaToken( NOT );
@@ -591,7 +591,7 @@ public class AnalisadorSintatico {
                 System.exit(0);
             }
             if(simboloID.getClasse()=="const"){
-                System.out.println(AnalisadorLexico.contaLinha+":classe de identificador incompatível ["+simboloID.getLexema()+"]");
+                System.out.println(AnalisadorLexico.contaLinha+":classe de identificador incompativel ["+simboloID.getLexema()+"]");
                 System.exit(0);
             }
             
@@ -648,7 +648,7 @@ public class AnalisadorSintatico {
             
             escreveBuffer("mov ax, DS:[" + exp_end + "]");
 			
-            escreveBuffer("cmp ax, 0");
+            escreveBuffer("cmp al, 0");
 			
             escreveBuffer("je " + RotuloFalso+"; rotulo falso");
 			

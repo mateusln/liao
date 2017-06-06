@@ -4,8 +4,8 @@ boolean y;
 integer x;
 /* Programa Principal */
 main
-y=true;
-x=1;
+y=false;
+x=13;
 	if(y)then begin
   		write(x);
   	end
