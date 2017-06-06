@@ -514,13 +514,13 @@ public class AnalisadorSintatico {
             CasaToken(TRUE);
             F_tipo="tipo_logico";
             f_end = memoria.alocarTemp(F_tipo);
-            escreveBuffer("mov ax, 0ffh ; const true");
+            escreveBuffer("mov al, 0ffh ; const true");
             escreveBuffer("mov DS:[" + f_end + "], al");
         }else if(registro.getNumToken() == FALSE){
             CasaToken(FALSE);
             F_tipo="tipo_logico";
             f_end = memoria.alocarTemp(F_tipo);
-            escreveBuffer("mov ax, 0h ; const false");
+            escreveBuffer("mov al, 0h ; const false");
             escreveBuffer("mov DS:[" + f_end + "], al");
         }else{
             CasaToken( NOT );
@@ -706,7 +706,7 @@ public class AnalisadorSintatico {
 				
 				
 			}else{
-				escreveBuffer("mov ax, DS:[" + exp_end + "]");
+				escreveBuffer("mov ax, DS:[" + exp_end + "] ; endereco da variavel que vai ser impressa");
 				escreveBuffer("mov di, " + stringEnd + " ;end. string temp.");
 				
 				escreveBuffer("mov cx, 0 ;contador");

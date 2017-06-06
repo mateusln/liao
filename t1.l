@@ -1,13 +1,14 @@
 /* Exemplo de Programa na linguagem L */
 
 boolean y;
-integer x;
+integer x,z;
 /* Programa Principal */
 main
 y=false;
 x=13;
-	if(y)then begin
+z=23;
+
+	
   		write(x);
-  	end
-  
+  	
 end
