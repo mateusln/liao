@@ -1,16 +1,16 @@
 /* Exemplo de Programa na linguagem L */
 
-boolean y;
-byte x,z;
-const MAX=2;
+byte x,z=1;
+boolean y=x;
+const NOME='mateus';
 /* Programa Principal */
 main
-y=false;
-MAX=13;
+y=true;
+x=13;
 z=23;
 y=not y;
 	if(y) then begin
-  		write(x);
+  		write(NOME);
   	end
   	
 end

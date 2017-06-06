@@ -157,27 +157,27 @@ public class AnalisadorSintatico {
         }
     }
     
-    public void alocarIDcomAtribuicao(String tipo, String id){
+    public void alocarIDcomAtribuicao(String tipo, String id, String valor){
         int endereco;
         switch(tipo){
             case "tipo_byte":
                 
                 endereco=memoria.alocarByte();
-                escreveBuffer("byte ?   ; "+id+" ? byte mem="+endereco);
+                escreveBuffer("byte "+valor+"   ; "+id+" = "+valor+"  byte mem="+endereco);
                 AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
                 break;
             case "tipo_inteiro":
-                escreveBuffer("sword ?  ; "+id+" ? inteiro");
+                escreveBuffer("sword "+valor+"   ; "+id+"="+valor+"   inteiro");
                 endereco=memoria.alocarInteiro();
                 AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
                 break;
             case "tipo_logico":
-                escreveBuffer("byte ?   ;" +id+" ? logico");
+                escreveBuffer("byte "+valor+"    ;" +id+"="+valor+"   logico");
                 endereco=memoria.alocarLogico();
                 AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
                 break;
             case "tipo_string":
-                escreveBuffer("byte  256 DUP (?)    ;"+id+"? String");
+                escreveBuffer("byte  \""+valor+"$\""+"    ;"+id+"="+valor+"  String");
                 endereco=memoria.alocarString();
                 AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
                 break;
@@ -263,23 +263,20 @@ public class AnalisadorSintatico {
             tipoDoValorConstante=AnalisadorLexico.tabela.getSimbolo(LexemaConst).getTipo();
             
             if(tipoDoValorConstante!="tipo_string"){
-                f_end = memoria.alocarTemp(tipoDoValorConstante);
-                escreveBuffer("mov ax, " + LexemaConst + " ; const " + LexemaConst);
-                escreveBuffer("mov DS:[" + f_end + "], al");
+                alocarIDcomAtribuicao(tipoDoValorConstante,lexTempID , LexemaConst);
+            }else{
+                alocarIDcomAtribuicao(tipoDoValorConstante,lexTempID , LexemaConst);
             }
+            
             
         }else if(registro.getNumToken() == TRUE){
             CasaToken(TRUE);
             tipoDoValorConstante="tipo_logico";
-            f_end = memoria.alocarTemp(tipoDoValorConstante);
-            escreveBuffer("mov al, 0ffh ; const true");
-            escreveBuffer("mov DS:[" + f_end + "], al");
+            alocarIDcomAtribuicao(tipoDoValorConstante,lexTempID , "0ffh");
         }else{ //registro.getNumToken() == FALSE
             CasaToken(FALSE);
             tipoDoValorConstante="tipo_logico";
-            f_end = memoria.alocarTemp(tipoDoValorConstante);
-            escreveBuffer("mov al, 0h ; const false");
-            escreveBuffer("mov DS:[" + f_end + "], al");
+            alocarIDcomAtribuicao(tipoDoValorConstante,lexTempID , "0h");
         }
         
         
@@ -364,7 +361,7 @@ public class AnalisadorSintatico {
                 Exp_tipo=ProcExp();
                 if(id_tipo!=Exp_tipo){
                     if( !(id_tipo == "tipo_inteiro" && Exp_tipo=="tipo_byte")){
-                        System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTempID).getLexema()+"]");
+                        System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
                         System.exit(0);
                     }
                 }
