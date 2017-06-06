@@ -222,24 +222,104 @@ public class AnalisadorSintatico {
 
     public void ProcD() throws IOException {
         String id_tipo="";
+        boolean flagPositivo=false,flagNegativo=false;
         
         
         if( registro.getNumToken() == CONST ) {
             CasaToken( CONST );
-            String lexTemp=registro.getLexema();
+            String lexTempID=registro.getLexema();
             CasaToken( IDENTIFICADOR );
             CasaToken( ATRIBUICAO );
             
-            String exp_Tipo=ProcExp();
-            if(AnalisadorLexico.tabela.getSimbolo(lexTemp).getClasse()==""){ //olha se o ID já foi declarado
-                AnalisadorLexico.tabela.getSimbolo(lexTemp).setClasse("const");
-                AnalisadorLexico.tabela.getSimbolo(lexTemp).setTipo(exp_Tipo);
-                Buffer.buffer.add(";"+lexTemp);
+            
+            if( registro.getNumToken() == SOMA ){
+                CasaToken( SOMA );
+                flagPositivo=true;
+            }else if( registro.getNumToken() == SUBTRACAO ){
+                CasaToken( SUBTRACAO );
+                flagNegativo=true;
+            }
+        
+        //String t_tipo=ProcT() const; // CT const
+        
+        String tipoDoValorConstante="";
+        
+        if( registro.getNumToken() == IDENTIFICADOR ){
+            String lexTemp=registro.getLexema();
+            CasaToken( IDENTIFICADOR );
+            Simbolo simboloTemp=AnalisadorLexico.tabela.getSimbolo(lexTemp);//busca o lex na tabela de simbolos
+            f_end=simboloTemp.getEndereco();
+            if(simboloTemp.getClasse()==null || simboloTemp.getClasse()==""){
+                System.out.println(AnalisadorLexico.contaLinha+":identificador nao declarado ["+simboloTemp.getLexema()+"]");
+                System.exit(0);
+            }else
+                tipoDoValorConstante=simboloTemp.getTipo();
+        }else if( registro.getNumToken() == VALORCONSTANTE ){
+            String LexemaConst=registro.getLexema(); //armazena o lex antes de passar pelo CT
+            CasaToken( VALORCONSTANTE );
+             // pega o enderco da constante e passa para t
+            //regra 02
+            //pega o tipo da tabela porque o programa so terá ele depois de passar pelo CT e inserir na tabela
+            tipoDoValorConstante=AnalisadorLexico.tabela.getSimbolo(LexemaConst).getTipo();
+            
+            if(tipoDoValorConstante!="tipo_string"){
+                f_end = memoria.alocarTemp(tipoDoValorConstante);
+                escreveBuffer("mov ax, " + LexemaConst + " ; const " + LexemaConst);
+                escreveBuffer("mov DS:[" + f_end + "], al");
+            }
+            
+        }else if(registro.getNumToken() == TRUE){
+            CasaToken(TRUE);
+            tipoDoValorConstante="tipo_logico";
+            f_end = memoria.alocarTemp(tipoDoValorConstante);
+            escreveBuffer("mov al, 0ffh ; const true");
+            escreveBuffer("mov DS:[" + f_end + "], al");
+        }else{ //registro.getNumToken() == FALSE
+            CasaToken(FALSE);
+            tipoDoValorConstante="tipo_logico";
+            f_end = memoria.alocarTemp(tipoDoValorConstante);
+            escreveBuffer("mov al, 0h ; const false");
+            escreveBuffer("mov DS:[" + f_end + "], al");
+        }
+        
+        
+        
+        /*
+        if(flagNegativo && t_tipo=="tipo_byte"){
+            t_tipo="tipo_inteiro";
+            Exps_tipo=t_tipo;
+        }else{
+            Exps_tipo=t_tipo;
+        }*/
+        
+        
+        Simbolo ID=AnalisadorLexico.tabela.getSimbolo(lexTempID);
+        if(AnalisadorLexico.tabela.getSimbolo(lexTempID).getClasse()==""){ //olha se o ID já foi declarado
+                AnalisadorLexico.tabela.getSimbolo(lexTempID).setClasse("const");
+                AnalisadorLexico.tabela.getSimbolo(lexTempID).setTipo(tipoDoValorConstante);
+                Buffer.buffer.add(";"+lexTempID);
                 //fazer alocação para cada tipo
-            }else{
-                System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTemp).getLexema()+"]");
+        }else{
+                System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTempID).getLexema()+"]");
+                System.exit(0);
+        }
+        
+        if(flagNegativo) {
+            if (tipoDoValorConstante=="tipo_string"|| tipoDoValorConstante=="tipo_logico"){
+                System.out.println(AnalisadorLexico.contaLinha + ":tipos incompativeis");
+                System.exit(0);
+            } else if (tipoDoValorConstante=="tipo_byte") {
+                tipoDoValorConstante="tipo_inteiro";
+                
+            }
+        } else if (flagPositivo) {
+            if (tipoDoValorConstante=="tipo_string"|| tipoDoValorConstante=="tipo_logico"){
+                System.out.println(AnalisadorLexico.contaLinha + ":tipos incompativeis");
                 System.exit(0);
             }
+        } else {
+         AnalisadorLexico.tabela.getSimbolo(lexTempID).setTipo(tipoDoValorConstante);
+        }
             
             /*if( registro.getNumToken() == SOMA )
                 CasaToken( SOMA );

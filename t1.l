@@ -2,10 +2,11 @@
 
 boolean y;
 byte x,z;
+const MAX=2;
 /* Programa Principal */
 main
 y=false;
-x=13;
+MAX=13;
 z=23;
 y=not y;
 	if(y) then begin
