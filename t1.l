@@ -1,8 +1,8 @@
 /* Exemplo de Programa na linguagem L */
 
 byte x,z=1;
-boolean y=x;
-const NOME='mateus';
+boolean y;
+const NOME=-false;
 /* Programa Principal */
 main
 y=true;
