@@ -636,6 +636,11 @@ public class AnalisadorSintatico {
             }
             String f1_tipo=T_tipo;
             String f2_tipo=ProcF();
+            
+            
+            escreveBuffer("mov ax, DS:[" + t_end + "]");
+            escreveBuffer("mov bx, DS:[" + f_end + "]");
+            
             if(t_op=="multi" || t_op=="div"){
                 if(f1_tipo=="tipo_logico" || f1_tipo=="tipo_string" || f2_tipo=="tipo_logico" || f2_tipo=="tipo_string"){
                     System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
@@ -653,6 +658,21 @@ public class AnalisadorSintatico {
                 }
                 T_tipo="tipo_logico";
             }
+            
+            if(t_op=="multi"){
+                escreveBuffer("mul bl ; multiplicacao");
+            }else if(t_op=="and")
+                escreveBuffer("and ax, bx");
+            else if(t_op=="div"){
+                escreveBuffer("mov dx, 0");
+                escreveBuffer("div bx ; divisao");
+            
+            }
+            
+            
+            t_end = memoria.alocarTemp(T_tipo);
+			
+            escreveBuffer("mov DS:[" + t_end + "], ax");
             
         } 
         return T_tipo;
