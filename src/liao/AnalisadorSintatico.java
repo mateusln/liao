@@ -602,11 +602,11 @@ public class AnalisadorSintatico {
             //pegar exp_end
             escreveBuffer("mov al, DS:[" + exp_end + "]");
             
-            if(exp_tipo.equals("tipo_byte")){
-				escreveBuffer("mov ah, 0");
+            if(exp_tipo.equals("tipo_byte") || exp_tipo.equals("tipo_logico")){
+				escreveBuffer("mov DS:[" + simboloID.getEndereco() + "], al; armazena byte");
             }
-            
-            escreveBuffer("mov DS:[" + simboloID.getEndereco() + "], ax");
+            else
+                escreveBuffer("mov DS:[" + simboloID.getEndereco() + "], ax;");
             
             if(simboloID.getTipo()!=exp_tipo){
                 if( !( simboloID.getTipo()=="tipo_inteiro" && exp_tipo=="tipo_byte") ){
