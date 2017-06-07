@@ -281,13 +281,7 @@ public class AnalisadorSintatico {
         
         
         
-        /*
-        if(flagNegativo && t_tipo=="tipo_byte"){
-            t_tipo="tipo_inteiro";
-            Exps_tipo=t_tipo;
-        }else{
-            Exps_tipo=t_tipo;
-        }*/
+        
         
         
         Simbolo ID=AnalisadorLexico.tabela.getSimbolo(lexTempID);
@@ -669,14 +663,52 @@ public class AnalisadorSintatico {
                     System.out.println(AnalisadorLexico.contaLinha + ":tipos incompativeis");
                     System.exit(0);
                 }
-            }else{ //caso logicoOp == igualdade
+            }else{ //caso logicoOp == diferenca
                 if(expS_tipo=="tipo_string" || expS2_tipo=="tipo_string"){
                     System.out.println(AnalisadorLexico.contaLinha + ":tipos incompativeis");
                     System.exit(0);
                 }
                 
+                if (expS_tipo != expS2_tipo){
+                    if( !(expS_tipo=="tipo_inteiro" || expS_tipo=="tipo_byte") ){
+                        System.out.println(AnalisadorLexico.contaLinha + ":tipos incompativeis ");
+                        System.exit(0);
+                    }else if(!(expS2_tipo=="tipo_inteiro" || expS2_tipo=="tipo_byte") ){
+                        System.out.println(AnalisadorLexico.contaLinha + ":tipos incompativeis");
+                        System.exit(0);
+                    }
+                }
+                
             }
             expS_tipo="tipo_logico"; //se ele chegou ate aqui a exp vai ser logica
+            
+            escreveBuffer("mov ax, DS:[" + exp_end + "]");
+            
+            if(expS2_tipo=="tipo_logico" || expS2_tipo=="tipo_byte"){
+                escreveBuffer("mov cx, ax");
+				
+		escreveBuffer("mov bl, DS:[" + expS_end + "]");
+				
+		escreveBuffer("mov al, bl");
+				
+		escreveBuffer("mov ah, 0");
+				
+		escreveBuffer("mov bx, ax");
+				
+		escreveBuffer("mov ax, cx");
+            }else{
+                escreveBuffer("mov bx, DS:[" + expS_end + "]");
+            }
+                
+            escreveBuffer("cmp ax, bx");
+		
+            
+
+            String RotuloVerdadeiro = rotulo.novoRotulo();
+            
+            
+            
+            
         }
         return expS_tipo;
     }// fim ProcExp

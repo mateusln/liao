@@ -1,23 +1,22 @@
-/* Exemplo de Programa na linguagem L -ERRO*/
+/* Exemplo de Programa na linguagem L - ERRO*/
 
 integer n;
 string nome;
-byte a=-1,x=1;
+byte x;
 boolean naoTerminou;
 const MAXITER=10;
 
 /* Programa Principal */
 main
-
   write('Digite seu nome: ');
   readln(nome);
   naoTerminou=true;
   n=0;
- x=30;
+  x = 0;
  nome = 'oi';
- while (n+1 != 1+x) begin
+  while (x != naoTerminou) begin
     writeln('Ola'' ',nome);
-    n=n-a;
+    n=n+1;
     naoTerminou=n<MAXITER;
   end
 end
