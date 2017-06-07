@@ -684,7 +684,7 @@ public class AnalisadorSintatico {
             
             escreveBuffer("mov ax, DS:[" + exp_end + "]");
             
-            if(expS2_tipo=="tipo_logico" || expS2_tipo=="tipo_byte"){
+            if(expS2_tipo=="tipo_logico" || expS2_tipo=="tipo_be"){
                 escreveBuffer("mov cx, ax");
 				
 		escreveBuffer("mov bl, DS:[" + expS_end + "]");
@@ -701,10 +701,50 @@ public class AnalisadorSintatico {
             }
                 
             escreveBuffer("cmp ax, bx");
-		
+            
+            
+            String RotuloVerdadeiro = rotulo.novoRotulo();
+            
+            switch(logicosOperador){
+                case "maior":
+                    escreveBuffer("jg " + RotuloVerdadeiro);
+                    break;
+                case "menor":
+                    escreveBuffer("jl " + RotuloVerdadeiro);
+                    break;
+                case "maiorigual":
+                    escreveBuffer("jge " + RotuloVerdadeiro);
+                    break;
+                case "menorigual":
+                    escreveBuffer("jle " + RotuloVerdadeiro);
+                    break;
+                case "igualdade":
+                    escreveBuffer("je " + RotuloVerdadeiro);
+                    break;
+                case "diferenca":
+                    escreveBuffer("jne " + RotuloVerdadeiro);
+                        break;
+            }
+            
+            escreveBuffer("mov AL, 0");
+			
+			
+            String RotuloFalso = rotulo.novoRotulo();
+            escreveBuffer("jmp " + RotuloFalso);
+			
+			
+            escreveBuffer(RotuloVerdadeiro + ":");
+			
+            escreveBuffer("mov AL, 0ffh");
+			
+			
+            escreveBuffer(RotuloFalso + ":");
+			
+            exp_end = memoria.novoTemp();
             
 
-            String RotuloVerdadeiro = rotulo.novoRotulo();
+            
+            escreveBuffer("mov DS:[" + exp_end + "], AL");
             
             
             

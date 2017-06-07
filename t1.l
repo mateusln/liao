@@ -1,22 +1,21 @@
-/* Exemplo de Programa na linguagem L - ERRO*/
+/* Exemplo de Programa na linguagem L */
 
-integer n;
-string nome;
-byte x;
-boolean naoTerminou;
-const MAXITER=10;
-
+integer z=10,x=12;
+boolean y;
+const NOME='mateus';
+byte flag=-10;
+const teste=1;
 /* Programa Principal */
 main
-  write('Digite seu nome: ');
-  readln(nome);
-  naoTerminou=true;
-  n=0;
-  x = 0;
- nome = 'oi';
-  while (x != naoTerminou) begin
-    writeln('Ola'' ',nome);
-    n=n+1;
-    naoTerminou=n<MAXITER;
-  end
+y=true or false;
+z=1;
+x=14-z;
+
+	if(1<=1) then begin
+  		write(x);
+  		write(NOME);
+  	end
+  	
+
+  	
 end
