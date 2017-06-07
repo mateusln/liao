@@ -210,7 +210,7 @@ public class AnalisadorSintatico {
         
         do
             ProcC();
-        while( registro.getNumToken() == IDENTIFICADOR || registro.getNumToken() == WHILE || registro.getNumToken() == IF || registro.getNumToken() == WRITE || registro.getNumToken() == WRITELN || registro.getNumToken() == READLN );
+        while( registro.getNumToken() == IDENTIFICADOR || registro.getNumToken() == WHILE || registro.getNumToken() == IF || registro.getNumToken() == WRITE || registro.getNumToken() == WRITELN || registro.getNumToken() == READLN || registro.getNumToken() == PONTO_VIRG  );
         
         escreveBuffer("mov ah, 4Ch");
 	escreveBuffer("int 21h");
