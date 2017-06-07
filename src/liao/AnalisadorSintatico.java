@@ -397,6 +397,7 @@ public class AnalisadorSintatico {
                         System.exit(0);
                     } else if (tipoDoValorConstante=="tipo_byte") {
                         tipoDoValorConstante="tipo_inteiro";
+                        AnalisadorLexico.tabela.getSimbolo(lexTempID).setTipo(tipoDoValorConstante);
                     }
                 } else if (flagPositivo) {
                     if (tipoDoValorConstante=="tipo_string"|| tipoDoValorConstante=="tipo_logico"){
@@ -472,6 +473,8 @@ public class AnalisadorSintatico {
                             System.exit(0);
                         } else if (tipoDoValorConstante=="tipo_byte") {
                             tipoDoValorConstante="tipo_inteiro";
+                            AnalisadorLexico.tabela.getSimbolo(lexTempID).setTipo(tipoDoValorConstante);
+                            
                         }//
                     } else if (flagPositivo) {
                         if (tipoDoValorConstante=="tipo_string"|| tipoDoValorConstante=="tipo_logico"){

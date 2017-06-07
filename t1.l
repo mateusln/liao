@@ -2,7 +2,7 @@
 
 integer n;
 string nome;
-byte x=1,a=-1;
+byte a=-11,x=1;
 boolean naoTerminou;
 const MAXITER=10;
 
@@ -13,11 +13,11 @@ main
   readln(nome);
   naoTerminou=true;
   n=0;
- ;
+ x=-1;
  nome = 'oi';
  while (n+1 != 1+x) begin
     writeln('Ola'' ',nome);
-    n=n+1;
+    n=n-a;
     naoTerminou=n<MAXITER;
   end
 end
