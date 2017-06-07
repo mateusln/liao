@@ -139,18 +139,19 @@ public class AnalisadorSintatico {
                 AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
                 break;
             case "tipo_inteiro":
-                escreveBuffer("sword ?  ; "+id+" ? inteiro");
+                
                 endereco=memoria.alocarInteiro();
+                escreveBuffer("sword ?  ; "+id+" ? inteiro mem="+endereco);
                 AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
                 break;
             case "tipo_logico":
-                escreveBuffer("byte ?   ;" +id+" ? logico");
                 endereco=memoria.alocarLogico();
+                escreveBuffer("byte ?   ;" +id+" ? logico mem="+endereco);
                 AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
                 break;
             case "tipo_string":
-                escreveBuffer("byte  256 DUP (?)    ;"+id+"? String");
                 endereco=memoria.alocarString();
+                escreveBuffer("byte  256 DUP (?)    ;"+id+"? String");
                 AnalisadorLexico.tabela.getSimbolo(id).setEndereco(endereco);
                 break;
             
@@ -1024,6 +1025,18 @@ public class AnalisadorSintatico {
 				escreveBuffer("mov ah, 09h");
 				
 				escreveBuffer("int 21h");
+                                
+                                //faz \n
+                                
+                                escreveBuffer("mov ah, 02h");
+				
+				escreveBuffer("mov dl, 0Dh");
+				
+				escreveBuffer("int 21h");
+				
+				escreveBuffer("mov DL, 0Ah");
+				
+				escreveBuffer("int 21h");
 				
 				
 			}else{
@@ -1087,6 +1100,18 @@ public class AnalisadorSintatico {
 				escreveBuffer("mov dx, " + stringEnd);
 				
 				escreveBuffer("mov ah, 09h");
+				
+				escreveBuffer("int 21h");
+                                
+                                //faz \n
+                                
+                                escreveBuffer("mov ah, 02h");
+				
+				escreveBuffer("mov dl, 0Dh");
+				
+				escreveBuffer("int 21h");
+				
+				escreveBuffer("mov DL, 0Ah");
 				
 				escreveBuffer("int 21h");
 			}

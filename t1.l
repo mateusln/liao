@@ -9,6 +9,8 @@ main
 y=true or false;
 z=1;
 x=0;
+write(x);
+  		
 
 	while(x<MAX) begin
   		write('ola ');
