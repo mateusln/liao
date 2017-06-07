@@ -361,6 +361,8 @@ public class AnalisadorSintatico {
                         System.exit(0);
                     }
                 } */
+                flagPositivo=false;
+                flagNegativo=false;
 				
 		if( registro.getNumToken() == SOMA ){
                     CasaToken( SOMA );
@@ -436,7 +438,10 @@ public class AnalisadorSintatico {
 						}
 					} */
 					
-					if( registro.getNumToken() == SOMA ){
+                flagPositivo=false;
+                flagNegativo=false;
+                
+		if( registro.getNumToken() == SOMA ){
                         CasaToken( SOMA );
                         flagPositivo=true;
                     }else if( registro.getNumToken() == SUBTRACAO ){
