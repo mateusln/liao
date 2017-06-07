@@ -3,15 +3,16 @@
 integer z=10,x=12;
 boolean y;
 byte flag=-10;
-const teste=1;
+const MAX=2;
 /* Programa Principal */
 main
 y=true or false;
 z=1;
-x=14-z;
+x=0;
 
-	if(1>=1) then begin
-  		write('suamae');
+	while(x<MAX) begin
+  		write('ola ');
+  		x=x+1;
   	end
   	
 

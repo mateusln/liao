@@ -10,7 +10,7 @@ sword 12   ; x=12   inteiro
 byte ?   ;y ? logico
 byte 10   ; flag = 10  byte mem=16391
 sword 10   ; flag=10   inteiro
-byte 1   ; teste = 1  byte mem=16394
+byte 2   ; MAX = 2  byte mem=16394
 dseg ENDS ;fim seg. dados
 cseg SEGMENT PUBLIC ;início seg. código
 ASSUME CS:cseg, DS:dseg
@@ -32,39 +32,42 @@ mov ax, 1 ; const 1
 mov DS:[2], al
 mov al, DS:[2]
 mov DS:[16385], al; armazena byte
-mov ax, 14 ; const 14
+mov ax, 0 ; const 0
 mov DS:[3], al
-mov ax, DS:[3]
-mov bh, 0
-mov bx, DS:[16385]
-sub ax, bx
-mov DS:[4], ax
-mov al, DS:[4]
-mov DS:[16388], ax;
-mov ax, 1 ; const 1
-mov DS:[4], al
-mov ax, 1 ; const 1
-mov DS:[5], al
-mov ax, DS:[4]
-mov bx, DS:[5]
+mov al, DS:[3]
+mov DS:[16388], al; armazena byte
+R0: ;rotInicio
+mov ax, DS:[16388]
+mov bx, DS:[16394]
 cmp ax, bx
-jge R2
+jl R2
 mov AL, 0
 jmp R3
 R2:
 mov AL, 0ffh
 R3:
-mov DS:[6], AL
-mov ax, DS:[6]
+mov DS:[4], AL
+mov al, DS:[4]
 cmp al, 0
-je R0; rotulo falso
+je R1
 dseg SEGMENT PUBLIC
-byte "'suamae'$"
+byte "'ola '$"
 dseg ENDS
 mov dx, 16395
 mov ah, 09h
 int 21h
-R0:
+add ax, bx
+mov ax, 1 ; const 1
+mov DS:[4], al
+mov ax, DS:[16388]
+mov bh, 0
+mov bx, DS:[4]
+add ax, bx
+mov DS:[5], ax
+mov al, DS:[5]
+mov DS:[16388], ax;
+jmp R0
+R1: ;rotFim
 mov ah, 4Ch
 int 21h
 cseg ENDS ;fim seg. código

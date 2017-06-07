@@ -924,12 +924,24 @@ public class AnalisadorSintatico {
         } else if( registro.getNumToken() == WHILE ){
             CasaToken( WHILE );
             CasaToken( A_PARENT );
+            String RotuloInicio = rotulo.novoRotulo();
+            String RotuloFim = rotulo.novoRotulo();
+            escreveBuffer(RotuloInicio + ": ;rotInicio");
             String exp_Tipo=ProcExp();
             if(exp_Tipo!="tipo_logico"){
                 System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
                 System.exit(0);
             }
             CasaToken( F_PARENT );
+            
+            
+			
+            
+            
+            escreveBuffer("mov al, DS:[" + exp_end + "]");
+            escreveBuffer("cmp al, 0");	
+            escreveBuffer("je " + RotuloFim);
+            
             if( registro.getNumToken() == BEGIN ) {
                 CasaToken( BEGIN );
                 do {
@@ -938,6 +950,10 @@ public class AnalisadorSintatico {
                 CasaToken( END );
             } else
                 ProcC();
+            
+            escreveBuffer("jmp " + RotuloInicio);
+			
+            escreveBuffer(RotuloFim + ": ;rotFim");
         } else if( registro.getNumToken() == IF ){
             CasaToken( IF );
             CasaToken( A_PARENT );
