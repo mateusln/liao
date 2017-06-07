@@ -2,7 +2,6 @@
 
 integer z=10,x=12;
 boolean y;
-const NOME='mateus';
 byte flag=-10;
 const teste=1;
 /* Programa Principal */
@@ -11,9 +10,8 @@ y=true or false;
 z=1;
 x=14-z;
 
-	if(1<=1) then begin
-  		write(x);
-  		write(NOME);
+	if(1>=1) then begin
+  		write('suamae');
   	end
   	
 

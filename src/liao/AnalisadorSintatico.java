@@ -684,7 +684,7 @@ public class AnalisadorSintatico {
             
             escreveBuffer("mov ax, DS:[" + exp_end + "]");
             
-            if(expS2_tipo=="tipo_logico" || expS2_tipo=="tipo_be"){
+            /*if(expS2_tipo=="tipo_logico" || expS2_tipo=="tipo_be"){
                 escreveBuffer("mov cx, ax");
 				
 		escreveBuffer("mov bl, DS:[" + expS_end + "]");
@@ -696,9 +696,9 @@ public class AnalisadorSintatico {
 		escreveBuffer("mov bx, ax");
 				
 		escreveBuffer("mov ax, cx");
-            }else{
+            }else */ 
                 escreveBuffer("mov bx, DS:[" + expS_end + "]");
-            }
+            
                 
             escreveBuffer("cmp ax, bx");
             
@@ -783,6 +783,16 @@ public class AnalisadorSintatico {
                 f_end = memoria.alocarTemp(F_tipo);
                 escreveBuffer("mov ax, " + LexemaConst + " ; const " + LexemaConst);
                 escreveBuffer("mov DS:[" + f_end + "], al");
+            }else{
+                
+                f_end= memoria.contador;
+             escreveBuffer("dseg SEGMENT PUBLIC");
+             escreveBuffer("byte \"" + LexemaConst + "$\"");
+				
+             escreveBuffer("dseg ENDS");
+             memoria.alocarString(LexemaConst.length());
+             
+             
             }
             
         }else if(registro.getNumToken() == TRUE){
