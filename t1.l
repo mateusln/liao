@@ -8,9 +8,9 @@ byte flag;
 const teste=1;
 /* Programa Principal */
 main
-y=true;
-x=14/2;
+y=false or false;
 z=1;
+x=14-z;
 
 	if(y) then begin
   		write(x);

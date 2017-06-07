@@ -416,13 +416,9 @@ public class AnalisadorSintatico {
         
         expS_end=t_end;
         
-        /*
-        if(flagNegativo && t_tipo=="tipo_byte"){
-            t_tipo="tipo_inteiro";
-            Exps_tipo=t_tipo;
-        }else{
-            Exps_tipo=t_tipo;
-        }*/
+        
+        
+       
   
         if(flagNegativo) {
             if (t_tipo=="tipo_string"|| t_tipo=="tipo_logico"){
@@ -431,6 +427,13 @@ public class AnalisadorSintatico {
             } else if (t_tipo=="tipo_byte") {
                 t_tipo="tipo_inteiro";
                 Exps_tipo=t_tipo;
+                
+                expS_end = memoria.novoTemp();
+		escreveBuffer("mov al, DS:[" + t_end + "] ;");
+			
+		escreveBuffer("not al");
+			
+		escreveBuffer("mov DS:[" + t_end + "], al");
             }
         } else if (flagPositivo) {
             if (t_tipo=="tipo_string"|| t_tipo=="tipo_logico"){
@@ -439,12 +442,20 @@ public class AnalisadorSintatico {
             }
         } else {
          Exps_tipo=t_tipo;
+         
+            
+         
         }
+        
+        
         
         while (registro.getNumToken() == SOMA || registro.getNumToken() == SUBTRACAO || registro.getNumToken() == OR ) {
             if( registro.getNumToken() == SOMA ){
                 CasaToken( SOMA );
                 t_op="adicao";
+                escreveBuffer("add ax, bx");
+                
+                
             }else if( registro.getNumToken() == SUBTRACAO ){
                 CasaToken( SUBTRACAO );
                 t_op="subtracao";
@@ -453,6 +464,22 @@ public class AnalisadorSintatico {
                 t_op="or";
             }
             String t2_tipo=ProcT();
+            int t2_end=t_end;
+            
+            escreveBuffer("mov ax, DS:[" + expS_end + "]");
+            escreveBuffer("mov bh, 0");
+            escreveBuffer("mov bx, DS:[" + t2_end + "]");
+            
+            if(t_op.equals("adicao")){
+                escreveBuffer("add ax, bx");
+            }else if (t_op.equals("subtracao")){
+                escreveBuffer("sub ax, bx");
+            }if (t_op.equals("or")){
+                escreveBuffer("or ax, bx");
+            }
+            
+            expS_end=memoria.novoTemp();
+            escreveBuffer("mov DS:[" + expS_end + "], ax");
             
             if(t_op=="adicao" || t_op=="subtracao"){
                 if(t_tipo=="tipo_logico" || t2_tipo=="tipo_logico"){
