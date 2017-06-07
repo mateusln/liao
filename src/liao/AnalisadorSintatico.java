@@ -294,8 +294,6 @@ public class AnalisadorSintatico {
         if(AnalisadorLexico.tabela.getSimbolo(lexTempID).getClasse()==""){ //olha se o ID já foi declarado
                 AnalisadorLexico.tabela.getSimbolo(lexTempID).setClasse("const");
                 AnalisadorLexico.tabela.getSimbolo(lexTempID).setTipo(tipoDoValorConstante);
-                Buffer.buffer.add(";"+lexTempID);
-                //fazer alocação para cada tipo
         }else{
                 System.out.println(AnalisadorLexico.contaLinha+":identificador ja declarado ["+AnalisadorLexico.tabela.getSimbolo(lexTempID).getLexema()+"]");
                 System.exit(0);
@@ -314,9 +312,7 @@ public class AnalisadorSintatico {
                 System.out.println(AnalisadorLexico.contaLinha + ":tipos incompativeis");
                 System.exit(0);
             }
-        } else {
-         AnalisadorLexico.tabela.getSimbolo(lexTempID).setTipo(tipoDoValorConstante);
-        }
+        } 
             
             /*if( registro.getNumToken() == SOMA )
                 CasaToken( SOMA );
@@ -357,20 +353,65 @@ public class AnalisadorSintatico {
             
             if( registro.getNumToken() == ATRIBUICAO ) {
                 CasaToken( ATRIBUICAO );
-                String Exp_tipo = "";
+                /* String Exp_tipo = "";
                 Exp_tipo=ProcExp();
                 if(id_tipo!=Exp_tipo){
                     if( !(id_tipo == "tipo_inteiro" && Exp_tipo=="tipo_byte")){
                         System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
                         System.exit(0);
                     }
+                } */
+				
+		if( registro.getNumToken() == SOMA ){
+                    CasaToken( SOMA );
+                    flagPositivo=true;
+                }else if( registro.getNumToken() == SUBTRACAO ){
+                    CasaToken( SUBTRACAO );
+                    flagNegativo=true;
                 }
-                alocarID(AnalisadorLexico.tabela.getSimbolo(lexTempID).getTipo(), lexTempID);
-                escreveBuffer("mov al, DS:[" + exp_end + "]");
-                escreveBuffer("mov DS:[" + AnalisadorLexico.tabela.getSimbolo(lexTempID).getEndereco() + "], ax");
+
+                String tipoDoValorConstante="";
+                String LexemaConst;
+                if( registro.getNumToken() == VALORCONSTANTE ){
+                    LexemaConst=registro.getLexema(); //armazena o lex antes de passar pelo CT
+                    CasaToken( VALORCONSTANTE );
+                    tipoDoValorConstante=AnalisadorLexico.tabela.getSimbolo(LexemaConst).getTipo();
+                    if(tipoDoValorConstante!="tipo_string"){
+                        alocarIDcomAtribuicao(tipoDoValorConstante,lexTempID , LexemaConst);
+                    }else{
+                        alocarIDcomAtribuicao(tipoDoValorConstante,lexTempID , LexemaConst);
+                    }
+                }else if(registro.getNumToken() == TRUE){
+                    CasaToken(TRUE);
+                    tipoDoValorConstante="tipo_logico";
+                    LexemaConst="0ffh";
+                }else{ //registro.getNumToken() == FALSE
+                    CasaToken(FALSE);
+                    tipoDoValorConstante="tipo_logico";
+                    LexemaConst="0h";
+                }
                 
-            }else
+                if(flagNegativo) {
+                    if (tipoDoValorConstante=="tipo_string"|| tipoDoValorConstante=="tipo_logico"){
+                        System.out.println(AnalisadorLexico.contaLinha + ":tipos incompativeis");
+                        System.exit(0);
+                    } else if (tipoDoValorConstante=="tipo_byte") {
+                        tipoDoValorConstante="tipo_inteiro";
+                    }
+                } else if (flagPositivo) {
+                    if (tipoDoValorConstante=="tipo_string"|| tipoDoValorConstante=="tipo_logico"){
+                        System.out.println(AnalisadorLexico.contaLinha + ":tipos incompativeis");
+                        System.exit(0);
+                    }
+                }
+                
+				
+                alocarIDcomAtribuicao(AnalisadorLexico.tabela.getSimbolo(lexTempID).getTipo(), lexTempID, LexemaConst);
+                
+                
+            }else//aloca sem atribuir
                 alocarID(AnalisadorLexico.tabela.getSimbolo(lexTempID).getTipo(), lexTempID);
+            
             while( registro.getNumToken() == VIRGULA ) {
                 CasaToken( VIRGULA );
                 lexTempID=registro.getLexema();
@@ -386,15 +427,65 @@ public class AnalisadorSintatico {
                 
                 if( registro.getNumToken() == ATRIBUICAO ){
                     CasaToken( ATRIBUICAO );
-                    String exp_tipo=ProcExp();
+                    /* String exp_tipo=ProcExp();
                     if(id_tipo!=exp_tipo){
                     if( !(id_tipo == "tipo_inteiro" && exp_tipo=="tipo_byte")){
                         System.out.println(AnalisadorLexico.contaLinha+":tipos incompativeis");
                         System.exit(0);
+						}
+					} */
+					
+					if( registro.getNumToken() == SOMA ){
+                        CasaToken( SOMA );
+                        flagPositivo=true;
+                    }else if( registro.getNumToken() == SUBTRACAO ){
+                        CasaToken( SUBTRACAO );
+                        flagNegativo=true;
                     }
-                }
-                }
-            }
+					
+                    String tipoDoValorConstante="";
+                    String LexemaConst;
+                                        
+                    
+                    if( registro.getNumToken() == VALORCONSTANTE ){
+                        LexemaConst=registro.getLexema(); //armazena o lex antes de passar pelo CT
+                        CasaToken( VALORCONSTANTE );
+                        tipoDoValorConstante=AnalisadorLexico.tabela.getSimbolo(LexemaConst).getTipo();
+                        if(tipoDoValorConstante!="tipo_string"){
+                            alocarIDcomAtribuicao(tipoDoValorConstante,lexTempID , LexemaConst);
+                        }else{
+                            alocarIDcomAtribuicao(tipoDoValorConstante,lexTempID , LexemaConst);
+                        }
+                    }else if(registro.getNumToken() == TRUE){
+                        CasaToken(TRUE);
+                        tipoDoValorConstante="tipo_logico";
+                        LexemaConst="0ffh";
+                    }else{ //registro.getNumToken() == FALSE
+                        CasaToken(FALSE);
+                        tipoDoValorConstante="tipo_logico";
+                        LexemaConst="0h";
+                    }
+					
+                    if(flagNegativo) {
+                        if (tipoDoValorConstante=="tipo_string"|| tipoDoValorConstante=="tipo_logico"){
+                            System.out.println(AnalisadorLexico.contaLinha + ":tipos incompativeis");
+                            System.exit(0);
+                        } else if (tipoDoValorConstante=="tipo_byte") {
+                            tipoDoValorConstante="tipo_inteiro";
+                        }//
+                    } else if (flagPositivo) {
+                        if (tipoDoValorConstante=="tipo_string"|| tipoDoValorConstante=="tipo_logico"){
+                            System.out.println(AnalisadorLexico.contaLinha + ":tipos incompativeis");
+                            System.exit(0);
+                        }//
+                    } 
+					
+                    alocarIDcomAtribuicao(AnalisadorLexico.tabela.getSimbolo(lexTempID).getTipo(), lexTempID, LexemaConst);
+                    
+					
+                }// fim atribuicao
+            } // fim while virgula
+            
             CasaToken( PONTO_VIRG );
         }
     } // fim ProcD

@@ -1,10 +1,9 @@
 /* Exemplo de Programa na linguagem L */
 
-integer x;
-integer z;
+integer z=10,x=12;
 boolean y;
 const NOME='mateus';
-byte flag;
+byte flag=-10;
 const teste=1;
 /* Programa Principal */
 main
