@@ -8,7 +8,7 @@ byte flag;
 const teste=1;
 /* Programa Principal */
 main
-y=false or false;
+y=true or false;
 z=1;
 x=14-z;
 
